@@ -1,0 +1,79 @@
+import 'package:flutter/material.dart';
+import 'package:phone_contact_app/shared/utils/index.dart';
+import 'package:phone_contact_app/shared/widgets/index.dart';
+
+class CustomDialogBox extends StatelessWidget {
+  const CustomDialogBox({
+    Key? key,
+    this.title = 'Please Confirm',
+    this.description = 'Are you sure to remove this contact?',
+  }) : super(key: key);
+
+  final String title, description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CustomContainer(
+          height: SizeUtils.getProportionateScreenHeight(130),
+          width: SizeUtils.getProportionateScreenWidth(260),
+          radius: 14,
+          color: Colors.white,
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 16,
+              ),
+              CustomTextOne(
+                text: title,
+                fontWeight: FontWeight.w500,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              CustomTextOne(
+                text: description,
+                fontSize: 12,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Divider(thickness: 1.5),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    GestureDetector(
+                      child: const CustomTextOne(
+                        text: 'Yes',
+                        textColor: Colors.red,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    const VerticalDivider(thickness: 1.5),
+                    GestureDetector(
+                      child: const CustomTextOne(
+                        text: 'No',
+                        textColor: brandColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}

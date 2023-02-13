@@ -1,0 +1,96 @@
+import 'package:flutter/material.dart';
+import 'package:phone_contact_app/shared/utils/index.dart';
+import 'package:phone_contact_app/shared/widgets/index.dart';
+
+class ContactDetails extends StatelessWidget {
+  const ContactDetails(
+      {Key? key,
+      required this.name,
+      required this.number,
+      required this.avatar,
+        required this.onTapOne,
+        required this.onTapTwo,
+        required this.call,
+        this.secondBtn,
+        this.iconData,
+        this.color,
+        this.secondBtnIcon,
+      })
+      : super(key: key);
+
+  final String name, number, avatar;
+  final Function()? onTapOne, onTapTwo, secondBtn,call;
+  final IconData? iconData, secondBtnIcon;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            GestureDetector(
+              onTap: onTapOne,
+              child: CustomContainer(
+                height: 45,
+                width: 45,
+                radius: 100,
+                color: color ?? brandColor,
+                alignment: Alignment.center,
+                child: CustomTextOne(text: avatar,textColor: Colors.white,),
+              ),
+            ),
+            const SizedBox(width: 14),
+            // info
+            GestureDetector(
+              onTap: onTapTwo,
+              child: CustomContainer(
+                radius: 0,
+                color: Colors.transparent,
+                width: SizeUtils.getProportionateScreenWidth(155),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomTextOne(
+                      text: name,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
+                      textOverflow: TextOverflow.ellipsis
+                    ),
+                    CustomTextOne(
+                      text: number,
+                      fontSize: 14,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        // Call /
+        Row(
+          children: [
+            if(secondBtnIcon != null)
+              IconButton(
+                onPressed: secondBtn,
+                icon: Icon(
+                  secondBtnIcon ?? Icons.arrow_drop_down,
+                  color: Colors.pink,
+                  size: 22,
+                ),
+              ),
+            IconButton(
+              onPressed: call,
+              icon: Icon(
+                iconData ?? Icons.call,
+                color: color ?? brandColor,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
