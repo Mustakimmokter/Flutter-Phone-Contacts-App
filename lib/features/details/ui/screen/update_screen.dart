@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:phone_contact_app/shared/utils/color_utils.dart';
 import 'package:phone_contact_app/shared/utils/size_utils.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
-class UpdateScreen extends StatelessWidget {
-  const UpdateScreen({
+class DetailsScreen extends StatelessWidget {
+  const DetailsScreen({
     Key? key,
     required this.name,
     required this.number,

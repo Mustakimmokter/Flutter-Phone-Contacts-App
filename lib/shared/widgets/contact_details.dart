@@ -71,17 +71,18 @@ class ContactDetails extends StatelessWidget {
         // Call /
         Row(
           children: [
-            if(secondBtnIcon != null)
-              IconButton(
-                onPressed: secondBtn,
-                icon: Icon(
+              GestureDetector(
+                onTap: secondBtn,
+                child: Icon(
                   secondBtnIcon ?? Icons.arrow_drop_down,
                   color: Colors.pink,
-                  size: 22,
+                  size: 20,
                 ),
               ),
+            const SizedBox(width: 05),
             IconButton(
               onPressed: call,
+              splashRadius: 25,
               icon: Icon(
                 iconData ?? Icons.call,
                 color: color ?? brandColor,

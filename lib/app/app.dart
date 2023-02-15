@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:phone_contact_app/features/create/provider/create_provider.dart';
 import 'package:phone_contact_app/features/favorite/provider/favorite_provider.dart';
 import 'package:phone_contact_app/features/home/provider/body_provider.dart';
 import 'package:phone_contact_app/features/home/provider/navbar_provider.dart';
-import 'package:phone_contact_app/features/home/ui/screen/home_screen.dart';
-import 'package:phone_contact_app/features/login/ui/screen/login_screen.dart';
-import 'package:phone_contact_app/features/profile/provider/profile_provider.dart';
+import 'package:phone_contact_app/features/my_profile/provider/profile_provider.dart';
+import 'package:phone_contact_app/shared/infrastructure/app_route.dart';
 import 'package:phone_contact_app/shared/utils/color_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -26,10 +26,14 @@ class MyApp extends StatelessWidget {
       ChangeNotifierProvider<ProfileProvider>(create: (context) {
         return ProfileProvider();
       },),
+      ChangeNotifierProvider<CreateProvider>(create: (context) {
+        return CreateProvider();
+      },),
     ],
     child: MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+     initialRoute: '/login',
+      onGenerateRoute: AppRoute.onGenerateRoute,
       theme: ThemeData(
         primarySwatch:  getMaterialColor(brandThirdColor),
         primaryColor:  getMaterialColor(brandColor),

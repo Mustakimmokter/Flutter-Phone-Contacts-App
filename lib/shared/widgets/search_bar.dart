@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:phone_contact_app/features/update/ui/screen/update_screen.dart';
+import 'package:phone_contact_app/features/details/ui/screen/update_screen.dart';
 import 'package:phone_contact_app/shared/models/contact_info.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 
@@ -151,7 +151,7 @@ class DataSearch extends SearchDelegate<String> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => UpdateScreen(
+                    builder: (_) => DetailsScreen(
                       name: matches[index].name!,
                       number: matches[index].number!,
                     ),
@@ -162,7 +162,7 @@ class DataSearch extends SearchDelegate<String> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => UpdateScreen(
+                    builder: (_) => DetailsScreen(
                       name: matches[index].name!,
                       number: matches[index].number!,
                     ),

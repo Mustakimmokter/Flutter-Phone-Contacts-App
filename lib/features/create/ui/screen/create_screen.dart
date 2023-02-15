@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:phone_contact_app/features/create/provider/create_provider.dart';
+import 'package:phone_contact_app/features/create/ui/components/index.dart';
 import 'package:phone_contact_app/features/home/provider/navbar_provider.dart';
-import 'package:phone_contact_app/features/home/ui/screen/home_screen.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
 
@@ -9,19 +13,21 @@ import '../../../../shared/utils/index.dart';
 class CreateScreen extends StatelessWidget {
   CreateScreen({Key? key}) : super(key: key);
 
-
   final TextEditingController nameCNTLR = TextEditingController();
   final TextEditingController numberCNTLR = TextEditingController();
+  final _globalKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     SizeUtils().init(context);
     final navbarProvider = Provider.of<NavbarProvider>(context);
+    final createProvider = Provider.of<CreateProvider>(context);
+    //String image = 'assets/images/image_1.jpg';
     return SizedBox(
       height: SizeUtils.screenHeight,
       width: SizeUtils.screenWidth,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 50),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -47,36 +53,75 @@ class CreateScreen extends StatelessWidget {
                 reverse: true,
                 child: Column(
                   children: [
-                    CustomContainer(
-                      height: 120,
-                      width: 120,
-                      alignment: Alignment.center,
-                      color: Colors.grey.shade400,
-                      borderWidth: 02,
-                      child: const Icon(Icons.camera_alt,color: Colors.white,size: 40,),
+                    ProfileContainer(
+                      margin: const EdgeInsets.only(left: 40, top: 40),
+                      iconBorderColor: Colors.transparent,
+                      iconColor: createProvider.image == null
+                          ? Colors.white
+                          : Colors.transparent,
+                      decorationImage: createProvider.image != null
+                          ? DecorationImage(
+                              image: FileImage(File(createProvider.image!)),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
+                      onTap: () {
+                        createProvider.getImagePicker();
+                      },
+                      iconTap: () {
+                        createProvider.getImagePicker();
+                      },
                     ),
                     const SizedBox(height: 20),
-                    CustomTextField(
-                      controller: nameCNTLR,
-                      onChanged: (name){
-                        name = nameCNTLR.text;
-                      },
-                      hintText: 'First name',
-                    ),
-                    const SizedBox(height: 10),
-                    CustomTextField(
-                      controller: numberCNTLR,
-                      keyBoardType: TextInputType.number,
-                      onChanged: (number){
-                        number = numberCNTLR.text;
-                      },
-                      hintText: 'Phone number',
+                    Form(
+                      key: _globalKey,
+                      child: Column(
+                        children: [
+                          CustomTextField(
+                            controller: nameCNTLR,
+                            hintText: 'First name',
+                            onChanged: (name) {
+                              name = nameCNTLR.text;
+                            },
+                            validator: (name) {
+                              if (name == null || name.isEmpty) {
+                                return 'Please enter the contact name';
+                              }
+                              return null;
+                            },
+                            textInputFormatter: [
+                              LengthLimitingTextInputFormatter(16),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          CustomTextField(
+                            controller: numberCNTLR,
+                            keyBoardType: TextInputType.number,
+                            hintText: 'Phone number',
+                            onChanged: (number) {
+                              number = numberCNTLR.text;
+                            },
+                            validator: (number) {
+                              if (number == null || number.isEmpty) {
+                                return 'Please enter the contact number';
+                              }else if (number.length < 10){
+                                return 'Number must be 11 Character';
+
+                              }
+                              return null;
+                            },
+                            textInputFormatter: [
+                              LengthLimitingTextInputFormatter(11),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 20),
-                    _customCheckBox(
-                      value: navbarProvider.isCheck,
-                      onChanged: (value){
-                        navbarProvider.getCheck(value);
+                    ContainerAndCheckBox(
+                      isCheck: createProvider.isCheck,
+                      onChanged: (value) {
+                        createProvider.getCheck(value);
                       },
                     ),
                     const SizedBox(height: 30),
@@ -84,45 +129,20 @@ class CreateScreen extends StatelessWidget {
                       height: SizeUtils.getProportionateScreenHeight(52),
                       backgroundColor: brandSecondaryColor,
                       borderRadius: 10,
-                      onPressed: (){
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                            builder: (_)=>HomeScreen()), (route) => false);
-                        navbarProvider.getSelectedIndex(0);
+                      onPressed: () {
+                        if (_globalKey.currentState!.validate()) {
+                          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                          navbarProvider.getSelectedIndex(0);
+                        }
                       },
                       text: 'Create',
                     ),
-                     // Column(
-                     //   children: List.generate(10, (index) => CustomTextOne(text: 'text')),
-                     // ),
                   ],
                 ),
               ),
             ),
-           SizedBox(height: SizeUtils.getProportionateScreenHeight(50),),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _customCheckBox({required bool value, required Function(bool? value) onChanged}){
-    return GestureDetector(
-      onTap: (){
-        onChanged(value);
-      },
-      child: CustomContainer(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        height: 50,
-        radius: 10,
-        color: Colors.transparent,
-        borderColor: Colors.black54,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const CustomTextOne(text: 'Add to favorite contact'),
-            Checkbox(
-              value: value,
-              onChanged: onChanged,
+            SizedBox(
+              height: SizeUtils.getProportionateScreenHeight(50),
             ),
           ],
         ),

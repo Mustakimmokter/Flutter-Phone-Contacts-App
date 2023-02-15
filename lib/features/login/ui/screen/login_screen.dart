@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:phone_contact_app/features/sign_up/ui/screen/sign_up_screen.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 
@@ -8,6 +7,7 @@ class LoginScreen extends StatelessWidget {
 
   final TextEditingController emailCTRL = TextEditingController();
   final TextEditingController passwordCTRL = TextEditingController();
+  final _globalKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class LoginScreen extends StatelessWidget {
       //backgroundColor: brandSecondaryColor,
       body: Column(
         children: [
-          CustomContainer(
+          const CustomContainer(
             padding: EdgeInsets.only(left: 20),
             width: double.maxFinite,
             height: 200,
@@ -50,24 +50,40 @@ class LoginScreen extends StatelessWidget {
                       letterSpacing: .5,
                     ),
                     const SizedBox(height: 30),
-                    CustomTextField(
-                      controller: emailCTRL,
-                      hintText: 'Email/Phone',
-                      suffix: Icon(Icons.check),
-                    ),
-                    CustomTextField(
-                      controller: passwordCTRL,
-                      hintText: 'Password',
-                      obscureText: true,
-                      suffix: Icon(Icons.remove_red_eye),
-                    ),
-                    SizedBox(height: 20),
+                   Form(
+                     key: _globalKey,
+                     child: Column(
+                       children: [
+                         CustomTextField(
+                           controller: emailCTRL,
+                           hintText: 'Email/Phone',
+                           suffix: Icon(Icons.check),
+                         ),
+                         CustomTextField(
+                           controller: passwordCTRL,
+                           hintText: 'Password',
+                           obscureText: true,
+                           validator: (password){
+                             if(password == null || password.isEmpty){
+                               return 'dfdf';
+                             }else{
+                               return null;
+                             }
+                           },
+                           suffix: Icon(Icons.remove_red_eye),
+                         ),
+                       ],
+                     ),
+                   ),
+                    const SizedBox(height: 20),
                     CustomBtn(
                       height: 50,
                       backgroundColor: brandSecondaryColor,
                       text: 'Log in',
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_)=>SignUpScreen()));
+                        if(_globalKey.currentState!.validate()){
+                          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                        }
                       },
                     ),
                     const SizedBox(height: 16),
@@ -87,7 +103,7 @@ class LoginScreen extends StatelessWidget {
                       textColor: brandSecondaryColor,
                       borderWidth: 1.5,
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pushNamed(context, '/signup');
                       },
                     ),
                     SizedBox(height: 100),

@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:phone_contact_app/features/profile/provider/profile_provider.dart';
+import 'package:phone_contact_app/features/my_profile/provider/profile_provider.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatelessWidget {
-  ProfileScreen({Key? key}) : super(key: key);
+class MyProfileScreen extends StatelessWidget {
+MyProfileScreen({Key? key}) : super(key: key);
 
   final TextEditingController nameCTRL = TextEditingController(text: 'Mustakim Mokter');
   final TextEditingController emailCTRL = TextEditingController(text: 'mustakimmokter@gmail.com');
@@ -17,7 +17,6 @@ class ProfileScreen extends StatelessWidget {
     SizeUtils().init(context);
     String image = 'assets/images/image_1.jpg';
     final profileProvider = Provider.of<ProfileProvider>(context);
-    final File img ;
     return Scaffold(
       body: SizedBox(
         height: SizeUtils.screenHeight,
@@ -34,44 +33,29 @@ class ProfileScreen extends StatelessWidget {
               left: 10,
               child: CustomBackBtn(
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
                   profileProvider.getShowPassword(true);
                 },
               ),
             ),
-            CustomContainer(
-              margin:
-              EdgeInsets.only(top: 100, left: SizeUtils.screenWidth / 3),
-              height: 130,
-              width: 130,
-              alignment: Alignment.center,
-              color: brandColor,
-              borderColor: Colors.grey.shade50,
-              borderWidth: 02,
-              decorationImage: profileProvider.image != null ?
-              DecorationImage(
-                image: FileImage(File(profileProvider.image!)),
-                fit: BoxFit.cover,
-              ) : null,
-              child: profileProvider.image != null
-                  ? const SizedBox()
-                  : const CustomTextOne(
-                text: 'M',
-                textColor: Colors.white,
-                fontSize: 60,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            GestureDetector(
-              child: CustomContainer(
-                margin: EdgeInsets.only(left: SizeUtils.screenWidth / 1.7,top: 200),
+            Positioned(
+              top: SizeUtils.getProportionateScreenHeight(125),
+              left: SizeUtils.getProportionateScreenWidth(123),
+              child: ProfileContainer(
+                margin: EdgeInsets.only(top: 95,left: 90),
                 padding: EdgeInsets.all(05),
-                color: Colors.grey.shade50,
-                child: Icon(Icons.camera_alt,color: brandSecondaryColor,),
+                iconBorderColor: Colors.grey.shade50,
+                containerSize: 130,
+                iconSize: 30,
+                decorationImage: profileProvider.image != null ?
+                DecorationImage(
+                  image: FileImage(File(profileProvider.image!)),
+                  fit: BoxFit.cover,
+                ) : null,
+                iconTap: (){
+                  profileProvider.getPickImage();
+                },
               ),
-              onTap: (){
-                profileProvider.getPickImage();
-              },
             ),
             _textFieldContainer(
               nameCTRL,

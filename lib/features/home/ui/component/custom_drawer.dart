@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:phone_contact_app/features/home/provider/navbar_provider.dart';
-import 'package:phone_contact_app/features/home/ui/screen/home_screen.dart';
-import 'package:phone_contact_app/features/login/ui/screen/login_screen.dart';
-import 'package:phone_contact_app/features/profile/ui/screen/profile_screen.dart';
-import 'package:phone_contact_app/shared/utils/color_utils.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +29,7 @@ class CustomDrawer extends StatelessWidget {
                 alignment: Alignment.center,
                 color: Colors.grey.shade400,
                 borderWidth: 02,
-                decorationImage: DecorationImage(image: AssetImage(image)),
+                decorationImage: image.isNotEmpty ? DecorationImage(image: AssetImage(image)) : null,
                 child: image.isNotEmpty? const SizedBox() : const Icon(Icons.camera_alt,color: Colors.white,size: 40,),
               ),
               const SizedBox(height: 16),
@@ -51,13 +47,13 @@ class CustomDrawer extends StatelessWidget {
               iconData: Icons.person_outline,
               title: 'My profile',
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
+                Navigator.pushNamedAndRemoveUntil(context, '/myProfile', (route) => false);
               },
             ),
             IconRowTextBtn(
               top: 60,
               onTap: (){
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=> HomeScreen()), (route) => false);
+                Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
                 navbarProvider.getSelectedIndex(1);
               },
             ),
@@ -66,7 +62,7 @@ class CustomDrawer extends StatelessWidget {
               iconData: Icons.add_circle_outline,
               title: 'Create',
               onTap: (){
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>HomeScreen()), (route) => false);
+                Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
                 navbarProvider.getSelectedIndex(2);
               },
             ),
@@ -87,7 +83,7 @@ class CustomDrawer extends StatelessWidget {
               iconData: Icons.lock_outline,
               title: 'Logout',
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (_)=>LoginScreen()));
+                Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
               },
             ),
           ],

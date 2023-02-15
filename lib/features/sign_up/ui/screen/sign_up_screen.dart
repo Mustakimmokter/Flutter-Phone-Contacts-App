@@ -72,7 +72,9 @@ class SignUpScreen extends StatelessWidget {
                       height: 50,
                       backgroundColor: brandSecondaryColor,
                       text: 'Sign up',
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                      },
                     ),
                     const SizedBox(height: 16),
                     Row(
@@ -91,7 +93,7 @@ class SignUpScreen extends StatelessWidget {
                       textColor: brandSecondaryColor,
                       borderWidth: 1.5,
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
                       },
                     ),
                     SizedBox(height: 70),

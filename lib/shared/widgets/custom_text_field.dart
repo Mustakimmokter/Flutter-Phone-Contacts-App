@@ -23,13 +23,13 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String? hintText, obscuringCharacter;
   final Function(String)? onChanged, onSubmit;
-  final String? Function(String?)? validator;
   final bool? obscureText, autofocus;
   final List<TextInputFormatter>? textInputFormatter;
   final TextInputType? keyBoardType;
   final InputBorder? border;
   final VoidCallback? onTap;
   final Widget? prefix,suffix;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
