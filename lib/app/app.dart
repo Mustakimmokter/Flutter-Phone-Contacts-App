@@ -3,7 +3,9 @@ import 'package:phone_contact_app/features/create/provider/create_provider.dart'
 import 'package:phone_contact_app/features/favorite/provider/favorite_provider.dart';
 import 'package:phone_contact_app/features/home/provider/body_provider.dart';
 import 'package:phone_contact_app/features/home/provider/navbar_provider.dart';
+import 'package:phone_contact_app/features/login/provider/login_provider.dart';
 import 'package:phone_contact_app/features/my_profile/provider/profile_provider.dart';
+import 'package:phone_contact_app/features/sign_up/provider/signup_provider.dart';
 import 'package:phone_contact_app/shared/infrastructure/app_route.dart';
 import 'package:phone_contact_app/shared/utils/color_utils.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +30,12 @@ class MyApp extends StatelessWidget {
       },),
       ChangeNotifierProvider<CreateProvider>(create: (context) {
         return CreateProvider();
+      },),
+      ChangeNotifierProvider<LoginProvider>(create: (context) {
+        return LoginProvider();
+      },),
+      ChangeNotifierProvider<SignupProvider>(create: (context) {
+        return SignupProvider();
       },),
     ],
     child: MaterialApp(

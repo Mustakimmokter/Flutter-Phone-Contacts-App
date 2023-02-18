@@ -47,6 +47,7 @@ class FavoriteScreen extends StatelessWidget {
                 ),
               ),
             ),
+
             Expanded(
               child: ListView.builder(
                 itemCount: favoriteProvider.contactList.length,
@@ -57,7 +58,6 @@ class FavoriteScreen extends StatelessWidget {
                     ),
                     child: AnimatedContainer(
                       padding: EdgeInsets.only(
-                        left: favoriteProvider.contactList[index].isSelected ? 10: 13,
                         top: favoriteProvider.contactList[index].isSelected ? 08: 12,
                         bottom: favoriteProvider.contactList[index].isSelected ? 08: 12,
                         right: favoriteProvider.contactList[index].isSelected ? 0: 03,

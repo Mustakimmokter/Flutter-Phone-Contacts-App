@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "738064721284",
+    "project_id": "phone-contact-app-153f5",
+    "storage_bucket": "phone-contact-app-153f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738064721284:android:e357bc0de5f156611ba9d1",
+        "android_client_info": {
+          "package_name": "com.example.phone_contact_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "738064721284-iahh5bmohetp0e0hkk5c8blvi5kpvs5q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.phone_contact_app",
+            "certificate_hash": "e807c3943e5f3ab4c30b414f2cec54493e8546f6"
+          }
+        },
+        {
+          "client_id": "738064721284-q3gs6aj72eveu4vm4hl4fm3krvakt5oc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdy98jbfInyYjXELYV4dacoFA95JYyTWE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "738064721284-q3gs6aj72eveu4vm4hl4fm3krvakt5oc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

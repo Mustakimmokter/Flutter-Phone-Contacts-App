@@ -38,8 +38,10 @@ class CustomTextField extends StatelessWidget {
       onChanged: onChanged,
       validator: validator,
       obscureText: obscureText!,
+
       //cursorColor: Colors.white,
       autofocus: autofocus!,
+      //textInputAction: TextInputAction.emergencyCall,
       keyboardType: keyBoardType,
       //style: TextStyle(color: Colors.white),
       onFieldSubmitted: onSubmit,

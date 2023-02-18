@@ -6,10 +6,12 @@ class ContainerAndCheckBox extends StatelessWidget {
     Key? key,
     required this.isCheck,
     required this.onChanged,
+    required this.title,
   }) : super(key: key);
 
   final bool isCheck;
   final Function(bool?) onChanged;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +22,13 @@ class ContainerAndCheckBox extends StatelessWidget {
       child: CustomContainer(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         height: 50,
-        radius: 10,
+        radius: 05,
         color: Colors.transparent,
         borderColor: Colors.black54,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const CustomTextOne(text: 'Add to favorite contact'),
+            CustomTextOne(text: title),
             Checkbox(
               value: isCheck,
               onChanged: onChanged,

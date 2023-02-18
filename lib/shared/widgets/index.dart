@@ -12,3 +12,4 @@ export 'custom_dialog_box.dart';
 export 'button/icon_row_text_btn.dart';
 export 'custom_snack_bar.dart';
 export 'profile_container.dart';
+export 'container_checkbox.dart';

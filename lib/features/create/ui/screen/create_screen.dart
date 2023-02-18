@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phone_contact_app/features/create/provider/create_provider.dart';
-import 'package:phone_contact_app/features/create/ui/components/index.dart';
 import 'package:phone_contact_app/features/home/provider/navbar_provider.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
@@ -119,6 +118,7 @@ class CreateScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     ContainerAndCheckBox(
+                      title: 'Add to favorite contact',
                       isCheck: createProvider.isCheck,
                       onChanged: (value) {
                         createProvider.getCheck(value);

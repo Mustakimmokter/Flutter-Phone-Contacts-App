@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:phone_contact_app/features/login/provider/login_provider.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
 
-  final TextEditingController emailCTRL = TextEditingController();
+  final TextEditingController numberCTRL = TextEditingController();
   final TextEditingController passwordCTRL = TextEditingController();
   final _globalKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     SizeUtils().init(context);
+    final loginProvider = Provider.of<LoginProvider>(context);
     return Scaffold(
       //backgroundColor: brandSecondaryColor,
       body: Column(
@@ -37,7 +41,7 @@ class LoginScreen extends StatelessWidget {
             child: SingleChildScrollView(
               reverse: true,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20,vertical: 40),
+                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 40),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,22 +59,51 @@ class LoginScreen extends StatelessWidget {
                      child: Column(
                        children: [
                          CustomTextField(
-                           controller: emailCTRL,
-                           hintText: 'Email/Phone',
-                           suffix: Icon(Icons.check),
+                           controller: numberCTRL,
+                           hintText: 'Mobile number',
+                           keyBoardType: TextInputType.number,
+                           suffix: loginProvider.isCheckVisible ? const Icon(
+                             Icons.check,
+                             color: brandSecondaryColor,
+                           ) : const SizedBox(),
+                           onChanged: (number){
+                             number = numberCTRL.text;
+                             loginProvider.getCheckVisible(number);
+                           },
+                           validator: (number){
+                             if(number == null || number.isEmpty){
+                               return 'Enter your number';
+                             }else if(number.length < 10){
+                               return 'Enter Correct number';
+                             }
+                             return null;
+                           },
+                           textInputFormatter: [
+                             LengthLimitingTextInputFormatter(11),
+                           ],
                          ),
                          CustomTextField(
                            controller: passwordCTRL,
                            hintText: 'Password',
-                           obscureText: true,
-                           validator: (password){
-                             if(password == null || password.isEmpty){
-                               return 'dfdf';
-                             }else{
-                               return null;
-                             }
+                           obscureText: loginProvider.isPasswordVisible? false : true,
+                           onChanged: (pass){
+                             pass = passwordCTRL.text;
                            },
-                           suffix: Icon(Icons.remove_red_eye),
+                           validator: (password){
+                             if(password!.length < 5){
+                               return 'Enter correct password';
+                             }
+                             return null;
+                           },
+                           suffix: GestureDetector(
+                             child: Icon(
+                               Icons.remove_red_eye,
+                               color: loginProvider.isPasswordVisible ? Colors.grey : brandSecondaryColor,
+                             ),
+                             onTap: (){
+                               loginProvider.getPasswordVisible();
+                             },
+                           ),
                          ),
                        ],
                      ),
@@ -106,7 +139,7 @@ class LoginScreen extends StatelessWidget {
                         Navigator.pushNamed(context, '/signup');
                       },
                     ),
-                    SizedBox(height: 100),
+                    const SizedBox(height: 100),
 
                   ],
                 ),

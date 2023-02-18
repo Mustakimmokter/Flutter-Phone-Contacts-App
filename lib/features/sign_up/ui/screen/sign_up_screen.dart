@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:phone_contact_app/features/sign_up/provider/signup_provider.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
+import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({Key? key}) : super(key: key);
 
   final TextEditingController nameCTRL = TextEditingController();
-  final TextEditingController emailCTRL = TextEditingController();
+  final TextEditingController numberCTRL = TextEditingController();
   final TextEditingController passwordCTRL = TextEditingController();
+
+  final _globalKey = GlobalKey<FormState>();
 
 
   @override
   Widget build(BuildContext context) {
     SizeUtils().init(context);
+    final signupProvider = Provider.of<SignupProvider>(context);
     return Scaffold(
       //backgroundColor: brandSecondaryColor,
       body: Column(
@@ -51,29 +57,70 @@ class SignUpScreen extends StatelessWidget {
                       letterSpacing: .5,
                     ),
                     const SizedBox(height: 30),
-                    CustomTextField(
-                      controller: nameCTRL,
-                      hintText: 'Enter your name',
-                      suffix: Icon(Icons.check),
+                    Form(
+                      key: _globalKey,
+                      child: Column(
+                        children: [
+                          CustomTextField(
+                            controller: nameCTRL,
+                            hintText: 'Your name',
+                          ),
+                          CustomTextField(
+                            controller: numberCTRL,
+                            keyBoardType: TextInputType.number,
+                            hintText: 'Mobile number',
+                            suffix: signupProvider.isCheckVisible?
+                            const Icon(Icons.check,color: brandSecondaryColor,): SizedBox(),
+                            onChanged: (number){
+                              number = numberCTRL.text;
+                              signupProvider.getCheckVisible(number);
+                            },
+                            validator: (number){
+                              if(number == null || number.isEmpty){
+                                return 'Required mobile number';
+                              }else if(number.length < 11){
+                                return 'Enter correct number';
+                              }
+                              return null;
+                            },
+                            textInputFormatter: [
+                              LengthLimitingTextInputFormatter(11),
+                            ],
+                          ),
+                          CustomTextField(
+                            controller: passwordCTRL,
+                            hintText: 'Password',
+                            obscureText: signupProvider.isPasswordVisible? true : false,
+                            suffix: GestureDetector(
+                              child: Icon(
+                                  Icons.remove_red_eye,
+                                color: signupProvider.isPasswordVisible ? Colors.grey : brandSecondaryColor,
+                              ),
+                              onTap: (){
+                                signupProvider.getPasswordVisible();
+                              },
+                            ),
+                            validator: (password){
+                              if(password!.isEmpty || password == null){
+                                return 'Required password';
+                              }else if(password.length < 6){
+                                return 'Password must be 6 characters up';
+                              }
+                              return null;
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                    CustomTextField(
-                      controller: emailCTRL,
-                      hintText: 'Email/Phone',
-                      suffix: Icon(Icons.check),
-                    ),
-                    CustomTextField(
-                      controller: passwordCTRL,
-                      hintText: 'Password',
-                      obscureText: true,
-                      suffix: Icon(Icons.remove_red_eye),
-                    ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     CustomBtn(
                       height: 50,
                       backgroundColor: brandSecondaryColor,
                       text: 'Sign up',
                       onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                        if(_globalKey.currentState!.validate()){
+                          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                        }
                       },
                     ),
                     const SizedBox(height: 16),
@@ -96,7 +143,7 @@ class SignUpScreen extends StatelessWidget {
                         Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
                       },
                     ),
-                    SizedBox(height: 70),
+                    const SizedBox(height: 70),
 
                   ],
                 ),

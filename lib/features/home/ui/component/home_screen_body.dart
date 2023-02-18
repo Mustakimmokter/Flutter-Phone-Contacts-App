@@ -64,8 +64,8 @@ class HomeScreenBody extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(
-                      left: 18,
-                      right: 08,
+                      left: 14,
+                      right: 14,
                     ),
                     child: AnimatedContainer(
                       // key: Key(bodyProvider.contactList[index].name!),
@@ -73,23 +73,12 @@ class HomeScreenBody extends StatelessWidget {
                       padding: EdgeInsets.only(
                         top: bodyProvider.contactList[index].isSelected ? 10: 0,
                         bottom: bodyProvider.contactList[index].isSelected ? 10: 0,
-                        left: bodyProvider.contactList[index].isSelected ? 10: 0,
                       ),
                       margin: EdgeInsets.only(
                         bottom: bodyProvider.contactList[index].isSelected ? 10: 0,
                         top: bodyProvider.contactList[index].isSelected ? 05: 0,
                       ),
                       decoration: BoxDecoration(
-                        // color: bodyProvider.contactList[index].isSelected ? Colors.white :
-                        // Colors.grey.shade400.withOpacity(0),
-                        /*boxShadow: [
-                          if(bodyProvider.contactList[index].isSelected)
-                            BoxShadow(
-                              color: Colors.grey.shade200,
-                              offset: const Offset(1, 1),
-                              blurRadius: 02,
-                            ),
-                        ],*/
                         border: Border.all(
                           color: bodyProvider.contactList[index].isSelected ? Colors.grey.shade200 : Colors.transparent,
                         ),
@@ -124,7 +113,13 @@ class HomeScreenBody extends StatelessWidget {
                             },
                             call: (){},
                           ),
-                          const Divider(),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: bodyProvider.contactList[index].isSelected ? 0: 10,
+                              right: bodyProvider.contactList[index].isSelected ? 0: 10,
+                            ),
+                            child: const Divider(),
+                          ),
                           if(bodyProvider.contactList[index].isSelected)
                             IntrinsicHeight(
                               child: Row(
