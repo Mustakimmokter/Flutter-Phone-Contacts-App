@@ -12,20 +12,18 @@ class SignupProvider extends ChangeNotifier {
 
 
   void getCheckVisible(String number){
-    if(number.length > 10){
+    if(number.isNotEmpty && number != null && number.length > 10){
       _isCheckVisible = true;
       notifyListeners();
     }else{
       _isCheckVisible = false;
       notifyListeners();
-      print('not');
     }
   }
 
   void getPasswordVisible(){
   _isPasswordVisible =! _isPasswordVisible;
     notifyListeners();
-  print(_isPasswordVisible);
   }
 
 

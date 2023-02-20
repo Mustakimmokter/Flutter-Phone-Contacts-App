@@ -120,6 +120,9 @@ class SignUpScreen extends StatelessWidget {
                       onPressed: () {
                         if(_globalKey.currentState!.validate()){
                           Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                          nameCTRL.clear();
+                          numberCTRL.clear();
+                          passwordCTRL.clear();
                         }
                       },
                     ),

@@ -70,17 +70,17 @@ class LoginScreen extends StatelessWidget {
                              number = numberCTRL.text;
                              loginProvider.getCheckVisible(number);
                            },
-                           validator: (number){
-                             if(number == null || number.isEmpty){
-                               return 'Enter your number';
-                             }else if(number.length < 10){
-                               return 'Enter Correct number';
-                             }
-                             return null;
-                           },
-                           textInputFormatter: [
-                             LengthLimitingTextInputFormatter(11),
-                           ],
+                           // validator: (number){
+                           //   if(number == null || number.isEmpty){
+                           //     return 'Enter your number';
+                           //   }else if(number.length < 10){
+                           //     return 'Enter Correct number';
+                           //   }
+                           //   return null;
+                           // },
+                           // textInputFormatter: <TextInputFormatter>[
+                           //   LengthLimitingTextInputFormatter(11),
+                           // ],
                          ),
                          CustomTextField(
                            controller: passwordCTRL,
@@ -114,9 +114,11 @@ class LoginScreen extends StatelessWidget {
                       backgroundColor: brandSecondaryColor,
                       text: 'Log in',
                       onPressed: () {
-                        if(_globalKey.currentState!.validate()){
-                          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-                        }
+                        loginProvider.getPhoneAuth(numberCTRL.text);
+                        print(numberCTRL.text);
+                        // if(_globalKey.currentState!.validate()){
+                        //   Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                        // }
                       },
                     ),
                     const SizedBox(height: 16),

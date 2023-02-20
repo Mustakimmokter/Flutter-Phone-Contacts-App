@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phone_contact_app/features/home/provider/navbar_provider.dart';
+import 'package:phone_contact_app/features/login/provider/login_provider.dart';
+import 'package:phone_contact_app/features/sign_up/provider/signup_provider.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +12,8 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navbarProvider = Provider.of<NavbarProvider>(context);
+    final signupProvider = Provider.of<SignupProvider>(context);
+    final loginProvider = Provider.of<LoginProvider>(context);
     String image = 'assets/images/image_1.jpg';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,6 +87,8 @@ class CustomDrawer extends StatelessWidget {
               iconData: Icons.lock_outline,
               title: 'Logout',
               onTap: (){
+                signupProvider.getCheckVisible('');
+                loginProvider.getCheckVisible('');
                 Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
               },
             ),
