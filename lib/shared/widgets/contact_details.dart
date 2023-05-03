@@ -26,7 +26,7 @@ class ContactDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 10),
+      padding: const EdgeInsets.only(left: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -40,7 +40,7 @@ class ContactDetails extends StatelessWidget {
                   radius: 100,
                   color: color ?? brandColor,
                   alignment: Alignment.center,
-                  child: CustomTextOne(text: avatar,textColor: Colors.white,),
+                  child: CustomText(text: avatar,textColor: Colors.white,),
                 ),
               ),
               const SizedBox(width: 14),
@@ -54,13 +54,13 @@ class ContactDetails extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomTextOne(
+                      CustomText(
                         text: name,
                         fontWeight: FontWeight.w500,
                         fontSize: 15,
                         textOverflow: TextOverflow.ellipsis
                       ),
-                      CustomTextOne(
+                      CustomText(
                         text: number,
                         fontSize: 14,
                       ),

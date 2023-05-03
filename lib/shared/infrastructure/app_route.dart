@@ -4,12 +4,15 @@ import 'package:phone_contact_app/features/home/ui/screen/home_screen.dart';
 import 'package:phone_contact_app/features/login/ui/screen/login_screen.dart';
 import 'package:phone_contact_app/features/my_profile/ui/screen/profile_screen.dart';
 import 'package:phone_contact_app/features/sign_up/ui/screen/sign_up_screen.dart';
+import 'package:phone_contact_app/features/splash/splash_screen.dart';
 
 class AppRoute {
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings){
 
     switch(settings.name){
+      case '/splash':
+        return MaterialPageRoute(builder: (context) => SplashScreen(),settings: settings);
       case '/login':
         return MaterialPageRoute(builder: (context) => LoginScreen(),settings: settings,);
       case '/signup':

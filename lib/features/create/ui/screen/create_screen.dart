@@ -21,7 +21,6 @@ class CreateScreen extends StatelessWidget {
     SizeUtils().init(context);
     final navbarProvider = Provider.of<NavbarProvider>(context);
     final createProvider = Provider.of<CreateProvider>(context);
-    //String image = 'assets/images/image_1.jpg';
     return SizedBox(
       height: SizeUtils.screenHeight,
       width: SizeUtils.screenWidth,
@@ -32,7 +31,7 @@ class CreateScreen extends StatelessWidget {
           children: [
             Column(
               children: [
-                const CustomTextOne(
+                const CustomText(
                   text: 'Create new contact',
                   textColor: brandSecondaryColor,
                   fontSize: 17,

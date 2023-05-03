@@ -26,14 +26,14 @@ class CustomDialogBox extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              CustomTextOne(
+              CustomText(
                 text: title,
                 fontWeight: FontWeight.w500,
               ),
               const SizedBox(
                 height: 5,
               ),
-              CustomTextOne(
+              CustomText(
                 text: description,
                 fontSize: 12,
               ),
@@ -47,7 +47,7 @@ class CustomDialogBox extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     GestureDetector(
-                      child: const CustomTextOne(
+                      child: const CustomText(
                         text: 'Yes',
                         textColor: Colors.red,
                         fontWeight: FontWeight.w500,
@@ -58,7 +58,7 @@ class CustomDialogBox extends StatelessWidget {
                     ),
                     const VerticalDivider(thickness: 1.5),
                     GestureDetector(
-                      child: const CustomTextOne(
+                      child: const CustomText(
                         text: 'No',
                         textColor: brandColor,
                         fontWeight: FontWeight.w500,

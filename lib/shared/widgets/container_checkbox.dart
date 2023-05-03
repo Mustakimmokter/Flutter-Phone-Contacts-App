@@ -28,7 +28,7 @@ class ContainerAndCheckBox extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CustomTextOne(text: title),
+            CustomText(text: title),
             Checkbox(
               value: isCheck,
               onChanged: onChanged,

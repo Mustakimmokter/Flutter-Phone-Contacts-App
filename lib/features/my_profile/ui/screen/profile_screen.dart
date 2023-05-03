@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:phone_contact_app/features/my_profile/provider/profile_provider.dart';
+import 'package:phone_contact_app/shared/services/user_services/auth_service.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
@@ -8,15 +9,14 @@ import 'package:provider/provider.dart';
 class MyProfileScreen extends StatelessWidget {
 MyProfileScreen({Key? key}) : super(key: key);
 
-  final TextEditingController nameCTRL = TextEditingController(text: 'Mustakim Mokter');
-  final TextEditingController emailCTRL = TextEditingController(text: 'mustakimmokter@gmail.com');
-  final TextEditingController passwordCTRL = TextEditingController(text: '123456789012');
+
 
   @override
   Widget build(BuildContext context) {
     SizeUtils().init(context);
     String image = 'assets/images/image_1.jpg';
     final profileProvider = Provider.of<ProfileProvider>(context);
+    final authService = Provider.of<AuthService>(context);
     return Scaffold(
       body: SizedBox(
         height: SizeUtils.screenHeight,
@@ -41,31 +41,36 @@ MyProfileScreen({Key? key}) : super(key: key);
             Positioned(
               top: SizeUtils.getProportionateScreenHeight(125),
               left: SizeUtils.getProportionateScreenWidth(123),
-              child: ProfileContainer(
-                margin: EdgeInsets.only(top: 95,left: 90),
-                padding: EdgeInsets.all(05),
+              child: authService.isGetPic ? ProfileContainer(
+                margin: const EdgeInsets.only(top: 95,left: 90),
+                padding: const EdgeInsets.all(05),
                 iconBorderColor: Colors.grey.shade50,
                 containerSize: 130,
                 iconSize: 30,
-                decorationImage: profileProvider.image != null ?
+                decorationImage:  authService.userProfile!.photoUrl != null && authService.userProfile!.photoUrl!.isNotEmpty ?
                 DecorationImage(
-                  image: FileImage(File(profileProvider.image!)),
+                  image: NetworkImage( authService.userProfile!.photoUrl!),
                   fit: BoxFit.cover,
                 ) : null,
                 iconTap: (){
-                  profileProvider.getPickImage();
+                  authService.pickProfilePic();
                 },
+              ) : const
+              ProfileContainer(
+                containerSize: 110,
+                iconSize: 0,
+                child: CircularProgressIndicator(),
               ),
             ),
             _textFieldContainer(
-              nameCTRL,
+              authService.nameCTRL!,
                 Icons.person_outline,
                 iconSize: 21,
                 fontSize: 15,
             ),
 
             _textFieldContainer(
-              emailCTRL,
+              authService.emailCTRL,
               Icons.email_outlined,
               top: 355,
               iconSize: 18,
@@ -74,7 +79,7 @@ MyProfileScreen({Key? key}) : super(key: key);
 
 
             _textFieldContainer(
-              passwordCTRL,
+                authService.passwordCTRL,
               Icons.lock_outline,
               top: 430,
               obSecure: profileProvider.isShowPassword,

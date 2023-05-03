@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 
+
 class LoginProvider extends ChangeNotifier {
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
 
@@ -14,15 +16,6 @@ class LoginProvider extends ChangeNotifier {
   bool get isPasswordVisible => _isPasswordVisible;
 
 
-  void getCheckVisible(String number){
-    if(number.isNotEmpty && number != null && number.length > 10){
-      _isCheckVisible = true;
-      notifyListeners();
-    }else{
-      _isCheckVisible = false;
-      notifyListeners();
-    }
-  }
 
   void getPasswordVisible(){
   _isPasswordVisible =! _isPasswordVisible;
@@ -43,6 +36,36 @@ class LoginProvider extends ChangeNotifier {
     );
   }
 
+
+
+
+  // void startAnimation() {
+  //   controller = AnimationController(
+  //     vsync: _tickerProvider!,
+  //     duration: const Duration(seconds: 1),
+  //   );
+  //   controller2 = AnimationController(
+  //     vsync: _tickerProvider!,
+  //     duration: const Duration(seconds: 2),
+  //   );
+  //   notifyListeners();
+  //   final curvedAnimation = CurvedAnimation(
+  //     parent: controller!,
+  //     curve: Curves.ease,
+  //   );
+  //   animationSize = Tween(begin: 0.0, end: 80.0).animate(curvedAnimation)..addListener(() {
+  //     notifyListeners();
+  //   });
+  //   animationSize2 = Tween(begin: 0.0,end: 50).animate(curvedAnimation)..addListener(() {notifyListeners(); });
+  //   animationColor = ColorTween(begin: Colors.red,end: Colors.green).animate(curvedAnimation)..addListener(() {
+  //     notifyListeners();
+  //   });
+  //
+  //   controller!.repeat();
+  //   controller2!.repeat();
+  //   print(animationSize!.value);
+  //
+  // }
 
 
 }

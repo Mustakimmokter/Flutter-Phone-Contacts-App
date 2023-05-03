@@ -29,7 +29,7 @@ class CustomModalSheet extends StatelessWidget {
           top: 05,
           child: Column(
             children: [
-              CustomTextOne(
+              CustomText(
                 text: header ?? '',
                 textColor: brandSecondaryColor,
                 fontSize: 17,

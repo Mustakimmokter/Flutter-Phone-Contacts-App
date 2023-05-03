@@ -35,7 +35,7 @@ class IconRowTextBtn extends StatelessWidget {
               color: brandSecondaryColor,
             ),
             const SizedBox(width: 20),
-            CustomTextOne(
+            CustomText(
               text: title ?? 'Favorite',
               textColor: brandSecondaryColor,
             ),

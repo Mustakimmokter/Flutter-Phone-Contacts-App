@@ -18,6 +18,7 @@ class CustomTextField extends StatelessWidget {
     this.onTap,
     this.prefix,
     this.suffix,
+    this.padding,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -30,6 +31,7 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onTap;
   final Widget? prefix,suffix;
   final String? Function(String?)? validator;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +40,13 @@ class CustomTextField extends StatelessWidget {
       onChanged: onChanged,
       validator: validator,
       obscureText: obscureText!,
-
-      //cursorColor: Colors.white,
       autofocus: autofocus!,
-      //textInputAction: TextInputAction.emergencyCall,
       keyboardType: keyBoardType,
-      //style: TextStyle(color: Colors.white),
       onFieldSubmitted: onSubmit,
       onTap: onTap,
       obscuringCharacter: obscuringCharacter!,
       decoration: InputDecoration(
+        contentPadding: padding ?? const EdgeInsets.only(top: 15),
         hintText: hintText,
         border: border,
        prefixIcon: prefix,

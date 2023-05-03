@@ -60,7 +60,7 @@ class CustomBtn extends StatelessWidget {
             ),
           ),
           child: child ??
-              CustomTextOne(
+              CustomText(
                 text: text ?? 'null',
                 textColor: textColor ?? Colors.white,
               ),

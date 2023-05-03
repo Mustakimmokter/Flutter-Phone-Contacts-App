@@ -32,7 +32,7 @@ class CustomSnackBar extends StatelessWidget {
         children: [
           Icon(icon ?? Icons.check, color: Colors.white),
           const SizedBox(width: 10),
-          CustomTextOne(text: title, textColor: Colors.white),
+          CustomText(text: title, textColor: Colors.white),
         ],
       ),
     );

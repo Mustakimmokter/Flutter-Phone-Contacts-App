@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:phone_contact_app/features/db/local_db.dart';
+import 'package:phone_contact_app/features/db/table.dart';
+import 'package:phone_contact_app/features/home/provider/body_provider.dart';
 import 'package:phone_contact_app/features/login/provider/login_provider.dart';
+import 'package:phone_contact_app/shared/app_helper/index.dart';
+import 'package:phone_contact_app/shared/services/user_services/auth_service.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +12,7 @@ import 'package:provider/provider.dart';
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
 
-  final TextEditingController numberCTRL = TextEditingController();
+  final TextEditingController emailCTRL = TextEditingController();
   final TextEditingController passwordCTRL = TextEditingController();
   final _globalKey = GlobalKey<FormState>();
 
@@ -16,6 +20,8 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeUtils().init(context);
     final loginProvider = Provider.of<LoginProvider>(context);
+    final authService = Provider.of<AuthService>(context);
+    final bodyProvider = Provider.of<BodyProvider>(context);
     return Scaffold(
       //backgroundColor: brandSecondaryColor,
       body: Column(
@@ -28,7 +34,7 @@ class LoginScreen extends StatelessWidget {
             radius: 0,
             alignment: Alignment.centerLeft,
             child: SafeArea(
-              child: CustomTextOne(
+              child: CustomText(
                 text: 'Welcome\nBack',
                 textColor: Colors.white,
                 fontSize: 22,
@@ -46,55 +52,50 @@ class LoginScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CustomTextOne(
-                      text: 'Log in',
-                      textColor: brandSecondaryColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: .5,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const CustomText(
+                          text: 'Log in',
+                          textColor: brandSecondaryColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: .5,
+                        ),
+                        authService.isEmailNotMatch? const CustomText(
+                          text: 'Email and password don\'t match',
+                          textColor: Colors.red,
+                          fontSize: 14,
+                        ):const SizedBox(),
+                      ],
                     ),
                     const SizedBox(height: 30),
                    Form(
                      key: _globalKey,
                      child: Column(
                        children: [
-                         CustomTextField(
-                           controller: numberCTRL,
-                           hintText: 'Mobile number',
-                           keyBoardType: TextInputType.number,
-                           suffix: loginProvider.isCheckVisible ? const Icon(
-                             Icons.check,
-                             color: brandSecondaryColor,
-                           ) : const SizedBox(),
-                           onChanged: (number){
-                             number = numberCTRL.text;
-                             loginProvider.getCheckVisible(number);
-                           },
-                           // validator: (number){
-                           //   if(number == null || number.isEmpty){
-                           //     return 'Enter your number';
-                           //   }else if(number.length < 10){
-                           //     return 'Enter Correct number';
-                           //   }
-                           //   return null;
-                           // },
-                           // textInputFormatter: <TextInputFormatter>[
-                           //   LengthLimitingTextInputFormatter(11),
-                           // ],
-                         ),
+                       CustomTextField(
+                       controller: emailCTRL,
+                       hintText: 'Enter email',
+                       prefix: const Icon(Icons.email),
+                       onChanged: (email){
+                         email = emailCTRL.text;
+                       },
+                       validator: (email){
+                         if(AppValidation.isEmailValid(email!)){
+                           return null;
+                         }else if(email.isEmpty || email.isEmpty){
+                           return 'Required email';
+                         }else{
+                           return 'Enter valid email';
+                         }
+                       },
+                     ),
                          CustomTextField(
                            controller: passwordCTRL,
                            hintText: 'Password',
-                           obscureText: loginProvider.isPasswordVisible? false : true,
-                           onChanged: (pass){
-                             pass = passwordCTRL.text;
-                           },
-                           validator: (password){
-                             if(password!.length < 5){
-                               return 'Enter correct password';
-                             }
-                             return null;
-                           },
+                           obscureText: loginProvider.isPasswordVisible? true : false,
+                           prefix: const Icon(Icons.lock),
                            suffix: GestureDetector(
                              child: Icon(
                                Icons.remove_red_eye,
@@ -104,6 +105,14 @@ class LoginScreen extends StatelessWidget {
                                loginProvider.getPasswordVisible();
                              },
                            ),
+                           validator: (password){
+                             if(password!.isEmpty || password == null){
+                               return 'Required password';
+                             }else if(password.length < 6){
+                               return 'Password must be 6 characters up';
+                             }
+                             return null;
+                           },
                          ),
                        ],
                      ),
@@ -112,20 +121,32 @@ class LoginScreen extends StatelessWidget {
                     CustomBtn(
                       height: 50,
                       backgroundColor: brandSecondaryColor,
-                      text: 'Log in',
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Spacer(flex: 6,),
+                          const CustomText(text: 'Login',textColor: Colors.white,),
+                          const Spacer(flex: 4,),
+                          SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: authService.isLogin? const CircularProgressIndicator(color: Colors.white,):const SizedBox(),
+                          ),
+                          const SizedBox(width: 16,),
+                        ],
+                      ),
                       onPressed: () {
-                        loginProvider.getPhoneAuth(numberCTRL.text);
-                        print(numberCTRL.text);
-                        // if(_globalKey.currentState!.validate()){
-                        //   Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-                        // }
+                        print('Login button');
+                        if(_globalKey.currentState!.validate()){
+                          authService.login(emailCTRL.text, passwordCTRL.text, context);
+                        }
                       },
                     ),
                     const SizedBox(height: 16),
                     Row(
                       children: const [
                         Expanded(child: Divider(color: brandSecondaryColor,thickness: 1,)),
-                        CustomTextOne(text: 'Or',textColor: brandSecondaryColor,),
+                        CustomText(text: 'Or',textColor: brandSecondaryColor,),
                         Expanded(child: Divider(color:brandSecondaryColor,thickness: 1,)),
                       ],
                     ),

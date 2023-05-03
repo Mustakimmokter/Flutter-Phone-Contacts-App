@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phone_contact_app/features/sign_up/provider/signup_provider.dart';
+import 'package:phone_contact_app/shared/app_helper/index.dart';
+import 'package:phone_contact_app/shared/services/user_services/auth_service.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +11,7 @@ class SignUpScreen extends StatelessWidget {
   SignUpScreen({Key? key}) : super(key: key);
 
   final TextEditingController nameCTRL = TextEditingController();
-  final TextEditingController numberCTRL = TextEditingController();
+  final TextEditingController emailCTRL = TextEditingController();
   final TextEditingController passwordCTRL = TextEditingController();
 
   final _globalKey = GlobalKey<FormState>();
@@ -19,6 +21,7 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeUtils().init(context);
     final signupProvider = Provider.of<SignupProvider>(context);
+    final authService = Provider.of<AuthService>(context);
     return Scaffold(
       //backgroundColor: brandSecondaryColor,
       body: Column(
@@ -31,7 +34,7 @@ class SignUpScreen extends StatelessWidget {
             radius: 0,
             alignment: Alignment.centerLeft,
             child: SafeArea(
-              child: CustomTextOne(
+              child: CustomText(
                 text: 'Create\nAccount',
                 textColor: Colors.white,
                 fontSize: 22,
@@ -49,7 +52,7 @@ class SignUpScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CustomTextOne(
+                    const CustomText(
                       text: 'Sign up',
                       textColor: brandSecondaryColor,
                       fontSize: 20,
@@ -64,33 +67,30 @@ class SignUpScreen extends StatelessWidget {
                           CustomTextField(
                             controller: nameCTRL,
                             hintText: 'Your name',
+                            prefix: const Icon(Icons.person),
+                            onChanged: (name){
+                              name = nameCTRL.text;
+                            },
                           ),
                           CustomTextField(
-                            controller: numberCTRL,
-                            keyBoardType: TextInputType.number,
-                            hintText: 'Mobile number',
-                            suffix: signupProvider.isCheckVisible?
-                            const Icon(Icons.check,color: brandSecondaryColor,): SizedBox(),
-                            onChanged: (number){
-                              number = numberCTRL.text;
-                              signupProvider.getCheckVisible(number);
+                            controller: emailCTRL,
+                            hintText: 'Enter email',
+                            prefix: const Icon(Icons.email),
+                            onChanged: (email){
+                              email = emailCTRL.text;
                             },
-                            validator: (number){
-                              if(number == null || number.isEmpty){
-                                return 'Required mobile number';
-                              }else if(number.length < 11){
-                                return 'Enter correct number';
+                            validator: (email){
+                              if(AppValidation.isEmailValid(email!)){
+                                return null;
                               }
-                              return null;
+                              return 'Enter valid email';
                             },
-                            textInputFormatter: [
-                              LengthLimitingTextInputFormatter(11),
-                            ],
                           ),
                           CustomTextField(
                             controller: passwordCTRL,
                             hintText: 'Password',
                             obscureText: signupProvider.isPasswordVisible? true : false,
+                            prefix: const Icon(Icons.lock),
                             suffix: GestureDetector(
                               child: Icon(
                                   Icons.remove_red_eye,
@@ -116,12 +116,25 @@ class SignUpScreen extends StatelessWidget {
                     CustomBtn(
                       height: 50,
                       backgroundColor: brandSecondaryColor,
-                      text: 'Sign up',
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Spacer(flex: 5,),
+                          const CustomText(text: 'Signup',textColor: Colors.white,),
+                          const Spacer(flex: 3,),
+                          SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: authService.isSignup? const CircularProgressIndicator(color: Colors.white,):const SizedBox(),
+                          ),
+                          const SizedBox(width: 16,),
+                        ],
+                      ),
                       onPressed: () {
                         if(_globalKey.currentState!.validate()){
-                          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                          authService.registration(nameCTRL.text, emailCTRL.text, passwordCTRL.text, context);
                           nameCTRL.clear();
-                          numberCTRL.clear();
+                          emailCTRL.clear();
                           passwordCTRL.clear();
                         }
                       },
@@ -130,7 +143,7 @@ class SignUpScreen extends StatelessWidget {
                     Row(
                       children: const [
                         Expanded(child: Divider(color: brandSecondaryColor,thickness: 1,)),
-                        CustomTextOne(text: 'Or',textColor: brandSecondaryColor,),
+                        CustomText(text: 'Or',textColor: brandSecondaryColor,),
                         Expanded(child: Divider(color:brandSecondaryColor,thickness: 1,)),
                       ],
                     ),
@@ -139,7 +152,7 @@ class SignUpScreen extends StatelessWidget {
                       height: 48,
                       backgroundColor: Colors.white,
                       borderColor: brandSecondaryColor,
-                      text: 'Log in',
+                     text: 'Login',
                       textColor: brandSecondaryColor,
                       borderWidth: 1.5,
                       onPressed: () {

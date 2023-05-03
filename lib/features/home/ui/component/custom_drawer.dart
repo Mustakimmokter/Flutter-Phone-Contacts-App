@@ -1,20 +1,21 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:phone_contact_app/app/ruff_use.dart';
 import 'package:phone_contact_app/features/home/provider/navbar_provider.dart';
-import 'package:phone_contact_app/features/login/provider/login_provider.dart';
-import 'package:phone_contact_app/features/sign_up/provider/signup_provider.dart';
+import 'package:phone_contact_app/shared/services/user_services/auth_service.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({Key? key}) : super(key: key);
+  const CustomDrawer({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final navbarProvider = Provider.of<NavbarProvider>(context);
-    final signupProvider = Provider.of<SignupProvider>(context);
-    final loginProvider = Provider.of<LoginProvider>(context);
-    String image = 'assets/images/image_1.jpg';
+    final authService = Provider.of<AuthService>(context);
+    print(authService.isGetPic);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -27,19 +28,33 @@ class CustomDrawer extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CustomContainer(
-                height: 100,
-                width: 100,
-                alignment: Alignment.center,
-                color: Colors.grey.shade400,
-                borderWidth: 02,
-                decorationImage: image.isNotEmpty ? DecorationImage(image: AssetImage(image)) : null,
-                child: image.isNotEmpty? const SizedBox() : const Icon(Icons.camera_alt,color: Colors.white,size: 40,),
+              authService.isGetPic ? ProfileContainer(
+                margin: const EdgeInsets.only(left: 35, top: 35),
+                containerSize: 110,
+                iconBorderColor: Colors.transparent,
+                iconColor:  authService.userProfile?.photoUrl != null && authService.userProfile!.photoUrl!.isNotEmpty ?  Colors.transparent : Colors.white,
+                decorationImage: authService.userProfile?.photoUrl != null && authService.userProfile!.photoUrl!.isNotEmpty
+                    ? DecorationImage(
+                  image: NetworkImage( authService.userProfile!.photoUrl!),
+                  fit: BoxFit.cover,
+                )
+                    : null,
+                onTap: () {
+                  authService.pickProfilePic();
+                },
+                iconTap: () {
+                  authService.pickProfilePic();
+                },
+              ): const
+              ProfileContainer(
+                containerSize: 110,
+                iconSize: 0,
+                child: CircularProgressIndicator(),
               ),
               const SizedBox(height: 16),
-              const CustomTextOne(text: 'Mustakim Mokter',fontSize: 18,fontWeight: FontWeight.w500,textColor: Colors.white),
+              CustomText(text: authService.userProfile?.name ??  'No name',fontSize: 18,fontWeight: FontWeight.w500,textColor: Colors.white),
               const SizedBox(height: 05),
-              const CustomTextOne(text: '01779-504864',textColor: Colors.white),
+              CustomText(text: authService.userProfile?.email ?? '',textColor: Colors.white,fontSize: 12),
             ],
           ),
         ),
@@ -74,22 +89,26 @@ class CustomDrawer extends StatelessWidget {
               top: 140,
               iconData: Icons.info_outline,
               title: 'About',
-              onTap: (){},
+              onTap: (){
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>RuffUses()), (route) => false);
+              },
             ),
             IconRowTextBtn(
               top: 180,
               iconData: Icons.settings_outlined,
               title: 'Settings',
-              onTap: (){},
+              onTap: (){
+                //authService.getProfile();
+                //authService.userUpdate('Rayhan',name: 'Rayhan');
+                authService.getUserProfile();
+              },
             ),
             IconRowTextBtn(
               top: SizeUtils.getProportionateScreenHeight(320),
               iconData: Icons.lock_outline,
               title: 'Logout',
               onTap: (){
-                signupProvider.getCheckVisible('');
-                loginProvider.getCheckVisible('');
-                Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+               authService.singOut(context);
               },
             ),
           ],

@@ -8,3 +8,30 @@ class AppValidation {
   }
 
 }
+
+
+
+abstract class ExampleOne {
+
+  void methodOne(){
+    print('mathodONe');
+  }
+
+  void methodTwo(){
+    print('mathodTwo');
+  }
+}
+
+class ExampleOverride implements ExampleOne {
+  @override
+  void methodOne() {
+    // TODO: implement methodOne
+  }
+
+  @override
+  void methodTwo() {
+    // TODO: implement methodTwo
+  }
+
+
+}

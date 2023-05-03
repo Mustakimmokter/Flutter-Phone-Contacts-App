@@ -40,13 +40,13 @@ class HomeScreenBody extends StatelessWidget {
                       color: Colors.grey,
                     ),
                   ),
-                  const CustomTextOne(text: 'Contacts',textColor: Colors.grey,),
+                  const CustomText(text: 'Contacts',textColor: Colors.grey,),
                   IconButton(
                     onPressed: () {
                       showSearch(
                         context: context,
                         delegate: DataSearch(
-                          contactList: bodyProvider.contactList
+                            contactList: bodyProvider.contactList
                         ),
                       );
                     },
@@ -174,10 +174,3 @@ class HomeScreenBody extends StatelessWidget {
   }
 }
 
-
-/*
- Navigator.push(context, MaterialPageRoute(builder: (_)=> UpdateScreen(
-                        number: SearchBar.numberList[index],
-                        name: SearchBar.nameList[index],
-                      )));
- */

@@ -58,7 +58,7 @@ class DetailsScreen extends StatelessWidget {
                     color: brandColor,
                     borderColor: Colors.white,
                     borderWidth: 02,
-                    child: CustomTextOne(
+                    child: CustomText(
                       text: name[0],
                       textColor: Colors.white,
                       fontSize: 60,
@@ -68,14 +68,14 @@ class DetailsScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: CustomTextOne(
+                    child: CustomText(
                       text: name,
                       textAlign: TextAlign.center,
                       fontWeight: FontWeight.w500,
                       fontSize: 25,
                     ),
                   ),
-                  CustomTextOne(
+                  CustomText(
                     text: number,
                     textColor: Colors.grey,
                   ),
@@ -187,7 +187,7 @@ class DetailsScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomTextOne(text: titles[index],fontWeight: FontWeight.w500,),
+                        CustomText(text: titles[index],fontWeight: FontWeight.w500,),
                         IconButton(
                             onPressed: (){
                               print('share');

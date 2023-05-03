@@ -4,6 +4,7 @@ import 'package:phone_contact_app/features/create/ui/screen/create_screen.dart';
 import 'package:phone_contact_app/features/favorite/ui/screen/favorite_screen.dart';
 import 'package:phone_contact_app/features/home/provider/navbar_provider.dart';
 import 'package:phone_contact_app/features/home/ui/component/index.dart';
+import 'package:phone_contact_app/shared/services/user_services/auth_service.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
@@ -22,8 +23,6 @@ class HomeScreen extends StatelessWidget {
   ];
 
 
-  bool slowAnimations = true;
-
   @override
   Widget build(BuildContext context) {
     final navbarProvider = Provider.of<NavbarProvider>(context);
@@ -31,17 +30,19 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       //resizeToAvoidBottomInset: false,
-      body: PageTransitionSwitcher(
+      body: ListenableProvider(create: (context) => AuthService(),
+      child: PageTransitionSwitcher(
         transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
-        return FadeThroughTransition(animation: primaryAnimation, secondaryAnimation: secondaryAnimation,child: child);
-      },
+          return FadeThroughTransition(animation: primaryAnimation, secondaryAnimation: secondaryAnimation,child: child);
+        },
         child: body[navbarProvider.selectedIndex],
+      ),
       ),
       drawer: CustomContainer(
         width: SizeUtils.getProportionateScreenWidth(265),
         radius: 0,
         color: Colors.white,
-        child: CustomDrawer(),
+        child: const CustomDrawer(),
       ),
       bottomNavigationBar: CustomContainer(
         height: 60,

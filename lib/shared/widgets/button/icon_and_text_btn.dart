@@ -33,7 +33,7 @@ class IconAndTextBtn extends StatelessWidget {
             size: iconSize,
           ),
           SizedBox(width: 04),
-          CustomTextOne(
+          CustomText(
             text: label ?? 'null',
             textColor: color,
             fontSize: labelSize,
