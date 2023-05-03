@@ -4,20 +4,20 @@ import 'package:phone_contact_app/shared/models/contact_info.dart';
 class FavoriteProvider extends ChangeNotifier {
 
 
-  final List<ContactInfo> _contactList = [
-    ContactInfo(
+  final List<Contacts> _contactList = [
+    Contacts(
       name: 'Mustakim Mokter fggfgfdgfdgfgdgdg'
     ),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
   ];
 
   final bool _isTrue = true;
@@ -27,7 +27,7 @@ class FavoriteProvider extends ChangeNotifier {
 
   bool get isTrue => _isTrue;
   int get selectedIndex => _selectedIndex;
-  List<ContactInfo> get contactList => _contactList;
+  List<Contacts> get contactList => _contactList;
 
   void getIsTrue(int index){
    contactList[index].isSelected =! contactList[index].isSelected;

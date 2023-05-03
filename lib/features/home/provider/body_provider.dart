@@ -8,37 +8,37 @@ class BodyProvider extends ChangeNotifier {
 
 
 
-  final List<ContactInfo> _contactList = [
-    ContactInfo(
+  final List<Contacts> _contactList = [
+    Contacts(
         name: 'Saddam',
         number: '01732-237185'
     ),
-    ContactInfo(
+    Contacts(
       name: 'Mishu',
       number: '0184163069',
     ),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
-    ContactInfo(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
+    Contacts(),
   ];
 
-  List<ContactInfo> get contactList => _contactList;
+  List<Contacts> get contactList => _contactList;
 
   void getIsTrue(int index) {
     contactList[index].isSelected = !contactList[index].isSelected;

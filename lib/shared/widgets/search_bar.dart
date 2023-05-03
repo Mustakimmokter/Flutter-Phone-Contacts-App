@@ -51,7 +51,7 @@ import 'package:phone_contact_app/shared/widgets/index.dart';
 
 class DataSearch extends SearchDelegate<String> {
   DataSearch({required this.contactList});
-  final List<ContactInfo> contactList;
+  final List<Contacts> contactList;
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -108,8 +108,8 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    List<ContactInfo> matches = [];
-   for(ContactInfo contactInfo in contactList){
+    List<Contacts> matches = [];
+   for(Contacts contactInfo in contactList){
      if(contactInfo.name!.toLowerCase().contains(query.toLowerCase())){
        matches.add(contactInfo);
      }
@@ -132,8 +132,8 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<ContactInfo> matches = [];
-    for(ContactInfo contactInfo in contactList){
+    List<Contacts> matches = [];
+    for(Contacts contactInfo in contactList){
       if(contactInfo.name!.toLowerCase().contains(query.toLowerCase())){
         matches.add(contactInfo);
       }
@@ -178,9 +178,9 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget showResults(BuildContext context) {
     super.showResults(context);
-    List<ContactInfo> matches = [];
+    List<Contacts> matches = [];
 
-    for(ContactInfo contactInfo in contactList){
+    for(Contacts contactInfo in contactList){
       if(contactInfo.name!.toLowerCase().contains(query.toLowerCase())){
         matches.add(contactInfo);
       }

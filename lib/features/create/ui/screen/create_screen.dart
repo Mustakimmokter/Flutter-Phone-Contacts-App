@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phone_contact_app/features/create/provider/create_provider.dart';
 import 'package:phone_contact_app/features/home/provider/navbar_provider.dart';
+import 'package:phone_contact_app/shared/services/user_services/user.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,7 @@ class CreateScreen extends StatelessWidget {
     SizeUtils().init(context);
     final navbarProvider = Provider.of<NavbarProvider>(context);
     final createProvider = Provider.of<CreateProvider>(context);
+    final userService = Provider.of<UserService>(context);
     return SizedBox(
       height: SizeUtils.screenHeight,
       width: SizeUtils.screenWidth,
@@ -129,10 +131,12 @@ class CreateScreen extends StatelessWidget {
                       backgroundColor: brandSecondaryColor,
                       borderRadius: 10,
                       onPressed: () {
-                        if (_globalKey.currentState!.validate()) {
-                          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-                          navbarProvider.getSelectedIndex(0);
-                        }
+                        userService.getContacts();
+                       // userService.addContact(name: nameCNTLR.text, avatar: '', number: numberCNTLR.text,isFavorite: createProvider.isCheck);
+                        // if (_globalKey.currentState!.validate()) {
+                        //   Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                        //   navbarProvider.getSelectedIndex(0);
+                        // }
                       },
                       text: 'Create',
                     ),

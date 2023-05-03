@@ -19,14 +19,16 @@ class FavoriteScreen extends StatelessWidget {
           children: [
             SafeArea(
               child: CustomContainer(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 color: Colors.grey.shade200,
                 radius: 0,
                 height: 55,
                 alignment: Alignment.centerLeft,
                 width: double.maxFinite,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    const CustomText(text: 'Favorite',textColor: Colors.grey,),
                     IconButton(
                       onPressed: () {
                         showSearch(
@@ -41,8 +43,6 @@ class FavoriteScreen extends StatelessWidget {
                         color: Colors.grey,
                       ),
                     ),
-                    // SizedBox(width: SizeUtils.screenWidth / 4),
-                    // CustomTextOne(text: 'Favorite',textColor: Colors.grey,),
                   ],
                 ),
               ),
