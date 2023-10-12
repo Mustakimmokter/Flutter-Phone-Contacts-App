@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:phone_contact_app/features/db/local_db.dart';
-import 'package:phone_contact_app/features/db/table.dart';
-import 'package:phone_contact_app/features/home/provider/body_provider.dart';
 import 'package:phone_contact_app/features/login/provider/login_provider.dart';
 import 'package:phone_contact_app/shared/app_helper/index.dart';
 import 'package:phone_contact_app/shared/services/user_services/auth_service.dart';
+import 'package:phone_contact_app/shared/services/user_services/user.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +19,7 @@ class LoginScreen extends StatelessWidget {
     SizeUtils().init(context);
     final loginProvider = Provider.of<LoginProvider>(context);
     final authService = Provider.of<AuthService>(context);
-    final bodyProvider = Provider.of<BodyProvider>(context);
+    final userService = Provider.of<UserService>(context);
     return Scaffold(
       //backgroundColor: brandSecondaryColor,
       body: Column(
@@ -52,24 +50,24 @@ class LoginScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const CustomText(
+                        CustomText(
                           text: 'Log in',
                           textColor: brandSecondaryColor,
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                           letterSpacing: .5,
                         ),
-                        authService.isEmailNotMatch? const CustomText(
-                          text: 'Email and password don\'t match',
-                          textColor: Colors.red,
-                          fontSize: 14,
-                        ):const SizedBox(),
                       ],
                     ),
                     const SizedBox(height: 30),
+                    authService.isEmailNotMatch? const CustomText(
+                      text: 'Don\'t match, please try again',
+                      textColor: Colors.red,
+                      fontSize: 14,
+                    ):const SizedBox(),
                    Form(
                      key: _globalKey,
                      child: Column(
@@ -106,7 +104,7 @@ class LoginScreen extends StatelessWidget {
                              },
                            ),
                            validator: (password){
-                             if(password!.isEmpty || password == null){
+                             if(password!.isEmpty){
                                return 'Required password';
                              }else if(password.length < 6){
                                return 'Password must be 6 characters up';
@@ -136,15 +134,16 @@ class LoginScreen extends StatelessWidget {
                         ],
                       ),
                       onPressed: () {
-                        print('Login button');
                         if(_globalKey.currentState!.validate()){
                           authService.login(emailCTRL.text, passwordCTRL.text, context);
+
                         }
+                        userService.getContacts();
                       },
                     ),
                     const SizedBox(height: 16),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         Expanded(child: Divider(color: brandSecondaryColor,thickness: 1,)),
                         CustomText(text: 'Or',textColor: brandSecondaryColor,),
                         Expanded(child: Divider(color:brandSecondaryColor,thickness: 1,)),

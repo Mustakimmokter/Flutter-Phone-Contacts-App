@@ -3,6 +3,7 @@ import 'package:phone_contact_app/features/details/ui/screen/update_screen.dart'
 import 'package:phone_contact_app/features/home/ui/screen/home_screen.dart';
 import 'package:phone_contact_app/features/login/ui/screen/login_screen.dart';
 import 'package:phone_contact_app/features/my_profile/ui/screen/profile_screen.dart';
+import 'package:phone_contact_app/features/otp/ui/screen/otp_screen.dart';
 import 'package:phone_contact_app/features/sign_up/ui/screen/sign_up_screen.dart';
 import 'package:phone_contact_app/features/splash/splash_screen.dart';
 

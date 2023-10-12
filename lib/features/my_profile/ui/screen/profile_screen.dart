@@ -7,7 +7,7 @@ import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
 
 class MyProfileScreen extends StatelessWidget {
-MyProfileScreen({Key? key}) : super(key: key);
+const MyProfileScreen({Key? key}) : super(key: key);
 
 
 

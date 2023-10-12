@@ -154,10 +154,7 @@ class DetailsScreen extends StatelessWidget {
                         },
                         title: 'Update',
                         onPressed: (){
-                          if(
-                          numberCNTLR.text.isNotEmpty && numberCNTLR.text != null
-                              && nameCNTLR.text.isNotEmpty && nameCNTLR.text != null
-                          ){
+                          if(numberCNTLR.text.isNotEmpty && nameCNTLR.text.isNotEmpty){
                             Navigator.pop(context);
                           }
                         },
@@ -174,7 +171,7 @@ class DetailsScreen extends StatelessWidget {
               top: 460,
               child: Column(
                 children: List.generate(3, (index) {
-                  final List<IconData> icons = [ Icons.whatsapp,Icons.telegram,Icons.share];
+                  final List<IconData> icons = [ Icons.whatshot,Icons.telegram,Icons.share];
                   final List<String> titles = [ 'Whatsapp','Telegram','Share'];
                   final List<Color> colors = [Colors.green,Colors.blue,Colors.blue];
                   return CustomContainer(

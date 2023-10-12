@@ -10,6 +10,7 @@ import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
 
 
+// ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
 

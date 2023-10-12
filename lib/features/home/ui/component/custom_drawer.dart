@@ -1,9 +1,9 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:phone_contact_app/app/ruff_use.dart';
 import 'package:phone_contact_app/features/home/provider/navbar_provider.dart';
 import 'package:phone_contact_app/shared/services/user_services/auth_service.dart';
+import 'package:phone_contact_app/shared/services/user_services/user.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +15,7 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final navbarProvider = Provider.of<NavbarProvider>(context);
     final authService = Provider.of<AuthService>(context);
-    print(authService.isGetPic);
+    final userService = Provider.of<UserService>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -109,6 +109,7 @@ class CustomDrawer extends StatelessWidget {
               title: 'Logout',
               onTap: (){
                authService.singOut(context);
+               userService.disposeData();
               },
             ),
           ],

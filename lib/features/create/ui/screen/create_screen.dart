@@ -80,9 +80,6 @@ class CreateScreen extends StatelessWidget {
                           CustomTextField(
                             controller: nameCNTLR,
                             hintText: 'First name',
-                            onChanged: (name) {
-                              name = nameCNTLR.text;
-                            },
                             validator: (name) {
                               if (name == null || name.isEmpty) {
                                 return 'Please enter the contact name';
@@ -98,9 +95,6 @@ class CreateScreen extends StatelessWidget {
                             controller: numberCNTLR,
                             keyBoardType: TextInputType.number,
                             hintText: 'Phone number',
-                            onChanged: (number) {
-                              number = numberCNTLR.text;
-                            },
                             validator: (number) {
                               if (number == null || number.isEmpty) {
                                 return 'Please enter the contact number';
@@ -131,12 +125,11 @@ class CreateScreen extends StatelessWidget {
                       backgroundColor: brandSecondaryColor,
                       borderRadius: 10,
                       onPressed: () {
-                        userService.getContacts();
-                       // userService.addContact(name: nameCNTLR.text, avatar: '', number: numberCNTLR.text,isFavorite: createProvider.isCheck);
-                        // if (_globalKey.currentState!.validate()) {
-                        //   Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-                        //   navbarProvider.getSelectedIndex(0);
-                        // }
+                        if (_globalKey.currentState!.validate()) {
+                          userService.addContact(name: nameCNTLR.text, avatar: '', number: numberCNTLR.text,isFavorite: createProvider.isCheck);
+                          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+                          navbarProvider.getSelectedIndex(0);
+                        }
                       },
                       text: 'Create',
                     ),

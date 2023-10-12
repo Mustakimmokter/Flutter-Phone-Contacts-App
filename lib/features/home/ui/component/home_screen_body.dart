@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phone_contact_app/features/home/provider/body_provider.dart';
+import 'package:phone_contact_app/shared/services/user_services/user.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/utils/size_utils.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
@@ -12,6 +13,8 @@ class HomeScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bodyProvider = Provider.of<BodyProvider>(context);
+    final userService = Provider.of<UserService>(context);
+    userService.getContacts();
     return Scaffold(
       body: SizedBox(
         height: SizeUtils.screenHeight,
@@ -60,9 +63,10 @@ class HomeScreenBody extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: bodyProvider.contactList.length,
+                itemCount: userService.contactInfoList == null || userService.contactInfoList!.isEmpty ?  1 : userService.contactInfoList!.length,
                 itemBuilder: (context, index) {
-                  return Padding(
+                  return userService.contactInfoList == null || userService.contactInfoList!.isEmpty ? const Center(child: CircularProgressIndicator()):
+                  Padding(
                     padding: const EdgeInsets.only(
                       left: 14,
                       right: 14,
@@ -89,9 +93,9 @@ class HomeScreenBody extends StatelessWidget {
                       child: Column(
                         children: [
                           ContactDetails(
-                            avatar: bodyProvider.contactList[index].name![0],
-                            name: bodyProvider.contactList[index].name!,
-                            number: bodyProvider.contactList[index].number!,
+                            avatar: userService.contactInfoList?[index]['avatar'] != '' ? userService.contactInfoList![index]['avatar'] : userService.contactInfoList![index]['name'][0],
+                            name: userService.contactInfoList![index]['name'],
+                            number: userService.contactInfoList![index]['number'],
                             secondBtnIcon: index.isEven? Icons.favorite_border: Icons.favorite,
                             onTapOne: () {
                               Navigator.pushNamed(context, '/detailsScreen');

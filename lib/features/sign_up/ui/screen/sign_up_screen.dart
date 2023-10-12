@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:phone_contact_app/features/sign_up/provider/signup_provider.dart';
 import 'package:phone_contact_app/shared/app_helper/index.dart';
 import 'package:phone_contact_app/shared/services/user_services/auth_service.dart';
@@ -101,7 +100,7 @@ class SignUpScreen extends StatelessWidget {
                               },
                             ),
                             validator: (password){
-                              if(password!.isEmpty || password == null){
+                              if(password!.isEmpty){
                                 return 'Required password';
                               }else if(password.length < 6){
                                 return 'Password must be 6 characters up';
@@ -113,6 +112,7 @@ class SignUpScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    //SignUp Button
                     CustomBtn(
                       height: 50,
                       backgroundColor: brandSecondaryColor,
@@ -131,17 +131,18 @@ class SignUpScreen extends StatelessWidget {
                         ],
                       ),
                       onPressed: () {
-                        if(_globalKey.currentState!.validate()){
-                          authService.registration(nameCTRL.text, emailCTRL.text, passwordCTRL.text, context);
-                          nameCTRL.clear();
-                          emailCTRL.clear();
-                          passwordCTRL.clear();
-                        }
+                        authService.registrationWithPhone(emailCTRL.text,context);
+                        // if(_globalKey.currentState!.validate()){
+                        //   authService.registration(nameCTRL.text, emailCTRL.text, passwordCTRL.text, context);
+                        //   nameCTRL.clear();
+                        //   emailCTRL.clear();
+                        //   passwordCTRL.clear();
+                        // }
                       },
                     ),
                     const SizedBox(height: 16),
-                    Row(
-                      children: const [
+                    const Row(
+                      children: [
                         Expanded(child: Divider(color: brandSecondaryColor,thickness: 1,)),
                         CustomText(text: 'Or',textColor: brandSecondaryColor,),
                         Expanded(child: Divider(color:brandSecondaryColor,thickness: 1,)),

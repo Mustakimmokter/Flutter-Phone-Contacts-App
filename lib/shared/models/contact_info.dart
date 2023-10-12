@@ -12,11 +12,11 @@ class Contacts {
 
 class ContactInfoModel {
   const ContactInfoModel({
-    this.isSelected = false,
+    this.isFavorite = false,
     this.avatar,
     this.name,
     this.number,
   });
-  final bool? isSelected;
+  final bool? isFavorite;
   final String? avatar, name, number;
 }

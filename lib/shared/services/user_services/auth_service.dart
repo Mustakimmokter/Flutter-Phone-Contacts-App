@@ -10,6 +10,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:phone_contact_app/features/db/local_db.dart';
 import 'package:phone_contact_app/features/db/table.dart';
 import 'package:phone_contact_app/shared/models/use_model.dart';
+import 'package:phone_contact_app/shared/widgets/index.dart';
+import 'package:pinput/pinput.dart';
 import '../../../features/home/ui/screen/home_screen.dart';
 
 class AuthService extends ChangeNotifier {
@@ -26,6 +28,7 @@ class AuthService extends ChangeNotifier {
 
   final ImagePicker _imagePicker = ImagePicker();
   UserModel? _userProfile;
+  String? _id;
 
 
 
@@ -75,6 +78,90 @@ class AuthService extends ChangeNotifier {
       Fluttertoast.showToast(msg: 'Error is: $e');
     }
   }
+  
+  
+  final TextEditingController _pinPutController = TextEditingController();
+  Future<void> registrationWithPhone(String phnNumber,BuildContext context)async{
+     print(phnNumber);
+    await auth.verifyPhoneNumber(
+      phoneNumber: '+8801845163069',
+      // '+8801779504864', '01845163069'
+      verificationCompleted: (PhoneAuthCredential credential) {
+        print('Successful..................');
+        print('Successful..................');
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        print('Failed.................');
+      },
+      codeSent: (String verificationId, int? resendToken)async{
+        print('Sent..................');
+        print('id............${verificationId.toString().trim()}................Id');
+        // ignore: use_build_context_synchronously
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (context) {
+            return SizedBox(
+              height: 600,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Pinput(
+                      controller: _pinPutController,
+                      androidSmsAutofillMethod: AndroidSmsAutofillMethod.none,
+                      length: 6,
+                      autofocus: true,
+                      focusedPinTheme: PinTheme(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(color: Colors.red),
+                        ),
+                      ),
+                      defaultPinTheme: PinTheme(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(color: Colors.grey),
+                        ),
+                      ),
+
+                    ),
+                    SizedBox(height: 20),
+                    CustomBtn(
+                      onPressed: ()async{
+                        print(_pinPutController.text.trim());
+                        PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: _pinPutController.text.trim());
+
+                        // Sign the user in (or link) with the credential
+                       await auth.signInWithCredential(credential);
+                        //SmsAutoFill().unregisterListener();
+                        // ignore: use_build_context_synchronously
+                        Navigator.pop(context);
+                        _pinPutController.clear();
+                      },
+                      text: 'Send',
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+        //PhoneAuthProvider.credential(verificationId: verificationId, smsCode: auth.s);
+      },
+      timeout: Duration(minutes: 1),
+      codeAutoRetrievalTimeout: (String verificationId) {
+        verificationId = verificationId;
+        print('TimeOut...................');
+      },
+    );
+
+  }
 
 
   Future<void> login(String emailAddress, String password, context) async {
@@ -120,7 +207,6 @@ class AuthService extends ChangeNotifier {
      notifyListeners();
      try {
        await auth.signOut().then((value) {
-         print('Signed out');
          _isSignOut = false;
          notifyListeners();
          Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
@@ -128,7 +214,7 @@ class AuthService extends ChangeNotifier {
 
        });
      } catch (e) {
-       print(e);
+       print('Error:...............$e..................');
      }
   }
 

@@ -8,7 +8,7 @@ class LoginProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
 
-  bool _isCheckVisible = false;
+  final bool _isCheckVisible = false;
   bool _isPasswordVisible = true;
 
 
