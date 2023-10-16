@@ -2,7 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:phone_contact_app/features/create/ui/screen/create_screen.dart';
 import 'package:phone_contact_app/features/favorite/ui/screen/favorite_screen.dart';
-import 'package:phone_contact_app/features/home/provider/navbar_provider.dart';
+import 'package:phone_contact_app/features/navbar_controller/provider/navbar_provider.dart';
 import 'package:phone_contact_app/features/home/ui/component/index.dart';
 import 'package:phone_contact_app/shared/services/user_services/auth_service.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
@@ -11,14 +11,14 @@ import 'package:provider/provider.dart';
 
 
 // ignore: must_be_immutable
-class HomeScreen extends StatelessWidget {
-  HomeScreen({Key? key}) : super(key: key);
+class NavBarController extends StatelessWidget {
+  NavBarController({Key? key}) : super(key: key);
 
   final TextEditingController numberCNTLR = TextEditingController();
   final TextEditingController nameCNTLR = TextEditingController();
 
   List<Widget> body = [
-    const HomeScreenBody(),
+    const HomeScreen(),
     const FavoriteScreen(),
     CreateScreen(),
   ];
