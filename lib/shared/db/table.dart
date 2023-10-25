@@ -7,6 +7,6 @@ class FirebaseTable {
 
   static const String userProfile = 'UserProfile';
   static const String contactInfo = 'ContactInfo';
-  static const String contacts = 'Contacts';
+  static const String contacts = 'Users';
 
 }
