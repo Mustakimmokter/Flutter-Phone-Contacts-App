@@ -9,18 +9,20 @@ class CustomBtn extends StatelessWidget {
     this.child,
     this.height,
     this.elevation,
-    this.borderRadius,
+    this.radius = 05,
     this.borderWidth,
     this.borderColor,
     this.backgroundColor,
     this.width,
+    this.borderRadius
   });
 
   final VoidCallback? onPressed;
   final String? text;
   final Widget? child;
-  final double? height, width, elevation, borderRadius, borderWidth;
+  final double? height, width, elevation, radius, borderWidth;
   final Color? borderColor, backgroundColor;
+  final BorderRadiusGeometry? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class CustomBtn extends StatelessWidget {
         fillColor: backgroundColor ?? brandSecondaryColor,
         focusColor: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius ?? 05),
+          borderRadius: borderRadius ?? BorderRadius.circular(radius!),
           side: BorderSide(
             color: borderColor ?? Colors.transparent,
             width: borderWidth ?? 0,

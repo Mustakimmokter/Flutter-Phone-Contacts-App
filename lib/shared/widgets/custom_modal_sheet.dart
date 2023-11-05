@@ -35,7 +35,7 @@ class CustomModalSheet extends StatelessWidget {
                 fontSize: 17,
                 fontWeight: FontWeight.w600,
               ),
-              SizedBox(height: 05),
+              const SizedBox(height: 05),
               CustomContainer(
                 color: Colors.grey.shade400,
                 height: 4,
@@ -50,8 +50,9 @@ class CustomModalSheet extends StatelessWidget {
           top: 60,
           child: Column(
             children: [
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               CustomTextField(
+                padding: const EdgeInsets.only(left: 14),
                 controller: nameCNTLR,
                 autofocus: true,
                 onChanged: nameChanged,
@@ -59,6 +60,7 @@ class CustomModalSheet extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               CustomTextField(
+                padding: const EdgeInsets.only(left: 14),
                 controller: numberCNTLR,
                 keyBoardType: TextInputType.number,
                 onChanged: numberChanged,
@@ -73,9 +75,8 @@ class CustomModalSheet extends StatelessWidget {
           left: 0,
           right: 0,
           child: CustomBtn(
-            height: 50,
             backgroundColor: brandSecondaryColor,
-            borderRadius: 10,
+            radius: 10,
             onPressed: onPressed,
             text: title,
           ),

@@ -37,6 +37,20 @@ class UserService extends ChangeNotifier {
 
   }
 
+  Future<void> updateContact(BuildContext context,String id,{required Map<String,dynamic> updateData})async{
+     final auth = FirebaseAuth.instance;
+     if(auth.currentUser?.uid != null && auth.currentUser!.uid.isNotEmpty){
+       CollectionReference infoCollection = FirebaseFirestore.instance.collection(FirebaseTable.contacts);
+       final contactInfo =  infoCollection.doc(auth.currentUser!.phoneNumber).collection(FirebaseTable.contactInfo);
+       await contactInfo.get().then((contacts) {
+         contactInfo.doc(id).update(updateData);
+         notifyListeners();
+       });
+     }
+
+
+   }
+
 
   Future<void> deleteContact(String id,BuildContext context)async{
     Navigator.pop(context);
@@ -54,21 +68,7 @@ class UserService extends ChangeNotifier {
 
   }
 
-  Future<void> updateContact(BuildContext context,String id,{required Map<String,dynamic> updateData})async{
-    final auth = FirebaseAuth.instance;
-    if(auth.currentUser?.uid != null && auth.currentUser!.uid.isNotEmpty){
-      CollectionReference infoCollection = FirebaseFirestore.instance.collection(FirebaseTable.contacts);
-      final contactInfo =  infoCollection.doc(auth.currentUser!.phoneNumber).collection(FirebaseTable.contactInfo);
-      await contactInfo.get().then((contacts) {
-        contactInfo.doc(id).update(updateData);
-        notifyListeners();
-      });
-    }
-
-
-  }
-
-  void updateFavorite(bool value,BuildContext context){
+  void addAndRemoveFavorite(bool value,BuildContext context){
      value =! value;
     _isUpdateFavorite = value;
     notifyListeners();
@@ -77,70 +77,6 @@ class UserService extends ChangeNotifier {
       const CustomSnackBar(icon: Icons.favorite_border_rounded, title: 'Remove to favorite').snackBar()
     );
   }
-
-   dynamic getContacts()async{
-    final auth = FirebaseAuth.instance;
-      CollectionReference infoCollection = FirebaseFirestore.instance.collection(FirebaseTable.contacts);
-      //final contactInfo = infoCollection.doc(currentUser!.email).collection(FirebaseTable.contactInfo).doc('akram');
-      final contactInfo = infoCollection.doc(auth.currentUser!.phoneNumber).collection(FirebaseTable.contactInfo);
-      // contactInfo.get().then((contacts)async{
-      //    _contactInfoList = contacts.docs;
-      //    notifyListeners();
-      // });
-
-
-    return contactInfo;
-
-  }
-
-
-
-  Future<void> getUserProfile()async{
-    final currentUser = FirebaseAuth.instance.currentUser;
-    CollectionReference user = FirebaseFirestore.instance.collection(FirebaseTable.userProfile);
-
-    try{
-      if(currentUser?.uid != null){
-        user.doc(currentUser!.phoneNumber).get().then((value){
-          final data = value.data() as Map<String,dynamic>;
-          //nameCTRL = TextEditingController(text: data['name']);
-          // _userProfile = UserModel(
-          //     name: data['name'],
-          //     email: data['email'],
-          // );
-          notifyListeners();
-        });
-      }
-    }catch (error){
-      print('User not found');
-    }
-
-
-
-
-  }
-
-  /* bool _isProfilePicDone = true;
-   bool get isProfilePicDone => _isProfilePicDone;
-
-  Future<void> upLoadProfilePic(String image)async{
-    print('object..............1..............$_isProfilePicDone');
-    _isProfilePicDone = false;
-    notifyListeners();
-    print('object..............2..............$_isProfilePicDone');
-    final currentUser = FirebaseAuth.instance.currentUser;
-    try{
-      if(image.isNotEmpty){
-        Reference reference = FirebaseStorage.instance.ref(FirebaseTable.userProfile).child('${currentUser!.phoneNumber}.jpg');
-        await reference.putFile(File(image),);
-            _isProfilePicDone = true;
-            notifyListeners();
-      }
-    }catch(e){
-      print('Try again');
-    }
-    print('object..............3..............$_isProfilePicDone');
-  }*/
 
    Future<void> saveUserProfile(String? name,BuildContext context)async{
      _isUpdateProfile = true;
@@ -168,7 +104,7 @@ class UserService extends ChangeNotifier {
          Navigator.pushNamedAndRemoveUntil(context, '/navBarController',(route) => false,);
        }catch(e){
          _isUpdateProfile = false;
-         print('Try again');
+         //print('Try again');
        }
      });
     }
@@ -187,13 +123,12 @@ class UserService extends ChangeNotifier {
            'photoUrl': updatePhotoUrl,
          });
        }catch(e){
-         print('Try again');
+         //print('Try again');
        }
    }
 
 
-
- // Make Phone call
+  // Make Phone call
   Future<void> phoneCallDialer(String phoneNumber) async {
     final Uri launchUri = Uri(
       scheme: 'tel',
@@ -201,7 +136,6 @@ class UserService extends ChangeNotifier {
     );
     await launchUrl(launchUri);
   }
-
   // Make sms
   Future<void> phoneSMS(String number)async{
     final Uri smsLaunchUri = Uri(
@@ -210,32 +144,14 @@ class UserService extends ChangeNotifier {
     );
     await launchUrl(smsLaunchUri);
   }
-
-  // Make direct Phone call (Need only one sim select from your phone settings)
-  // Future<void> phoneCallDirect(String phoneNumber) async{
-  //  await FlutterPhoneDirectCaller.callNumber('+88$phoneNumber');
-  //
-  // }
-Future<void> shareContact(String number)async{
+  // share
+  Future<void> shareContact(String number)async{
   try{
-    //Share.share(number,subject: 'telegram is social media');
     Share.shareWithResult(number);
   }catch(e){
-    print(e);
+    //print(e);
   }
 }
-
-  /// Number Validation
-/*
-return RegExp(
-  // "^(?:[+0]9)?[0-9]{10,12}",
-  "^[0-9]{4} [0-9]{7}",
-).hasMatch(name!)
-    ? null
-    : 'Format XXXX XXXXXXX';
-*/
-
-
 
 
   bool _isEditedDetails = false;

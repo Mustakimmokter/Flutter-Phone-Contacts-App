@@ -30,6 +30,12 @@ dependencies:
   hive_flutter: ^1.1.0
   hive: ^2.2.3
   pinput: ^3.0.1
+  url_launcher: ^6.1.14
+  share_plus: ^7.2.1
+  connectivity_plus: ^5.0.1
+
+
+
 
 
 
@@ -49,4 +55,4 @@ flutter:
 
 
   assets:
-    - assets/images/
+    - assets/icons/

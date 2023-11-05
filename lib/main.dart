@@ -3,7 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:phone_contact_app/app/index.dart';
-import 'package:phone_contact_app/features/db/local_db.dart';
+import 'package:phone_contact_app/shared/db/local_db.dart';
 
 Future<void> main()async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -6,10 +6,11 @@ class CustomDialogBox extends StatelessWidget {
   const CustomDialogBox({
     Key? key,
     this.title = 'Please Confirm',
-    this.description = 'Are you sure to remove this contact?',
+    this.description = 'Are you sure to remove this contact?', this.yesTap, this.noTap,
   }) : super(key: key);
 
   final String title, description;
+  final VoidCallback? yesTap, noTap;
 
   @override
   Widget build(BuildContext context) {
@@ -47,25 +48,21 @@ class CustomDialogBox extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     GestureDetector(
+                      onTap: yesTap,
                       child: const CustomText(
                         text: 'Yes',
                         textColor: Colors.red,
                         fontWeight: FontWeight.w500,
                       ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
                     ),
                     const VerticalDivider(thickness: 1.5),
                     GestureDetector(
+                      onTap: noTap,
                       child: const CustomText(
                         text: 'No',
                         textColor: brandColor,
                         fontWeight: FontWeight.w500,
                       ),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
                     ),
                   ],
                 ),

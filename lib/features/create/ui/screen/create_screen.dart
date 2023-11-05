@@ -1,17 +1,25 @@
-import 'dart:io';
-
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phone_contact_app/features/create/provider/create_provider.dart';
-import 'package:phone_contact_app/features/home/provider/navbar_provider.dart';
-import 'package:phone_contact_app/shared/services/user_services/user.dart';
+import 'package:phone_contact_app/shared/services/user_services/user_service.dart';
+import 'package:phone_contact_app/shared/utils/index.dart';
 import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../shared/utils/index.dart';
-
 class CreateScreen extends StatelessWidget {
-  CreateScreen({Key? key}) : super(key: key);
+   const CreateScreen({super.key});
+
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<CreateProvider>(create: (context) => CreateProvider(),child: CreateScreenBody(),);
+  }
+}
+
+
+class CreateScreenBody extends StatelessWidget {
+  CreateScreenBody({Key? key}) : super(key: key);
 
   final TextEditingController nameCNTLR = TextEditingController();
   final TextEditingController numberCNTLR = TextEditingController();
@@ -20,17 +28,16 @@ class CreateScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeUtils().init(context);
-    final navbarProvider = Provider.of<NavbarProvider>(context);
-    final createProvider = Provider.of<CreateProvider>(context);
     final userService = Provider.of<UserService>(context);
-    return SizedBox(
-      height: SizeUtils.screenHeight,
-      width: SizeUtils.screenWidth,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+    final createProvider = Provider.of<CreateProvider>(context);
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.only(left: 20,right: 20,top: SizeUtils.screenHeight / 15.6),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+           const Spacer(flex: 1,),
+            const SizedBox(height: 10,),
             Column(
               children: [
                 const CustomText(
@@ -45,104 +52,80 @@ class CreateScreen extends StatelessWidget {
                   height: 4,
                   width: 70,
                 ),
-                const SizedBox(height: 30),
               ],
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                reverse: true,
-                child: Column(
-                  children: [
-                    ProfileContainer(
-                      margin: const EdgeInsets.only(left: 40, top: 40),
-                      iconBorderColor: Colors.transparent,
-                      iconColor: createProvider.image == null
-                          ? Colors.white
-                          : Colors.transparent,
-                      decorationImage: createProvider.image != null
-                          ? DecorationImage(
-                              image: FileImage(File(createProvider.image!)),
-                              fit: BoxFit.cover,
-                            )
-                          : null,
-                      onTap: () {
-                        createProvider.getImagePicker();
-                      },
-                      iconTap: () {
-                        createProvider.getImagePicker();
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    Form(
-                      key: _globalKey,
-                      child: Column(
-                        children: [
-                          CustomTextField(
-                            controller: nameCNTLR,
-                            hintText: 'First name',
-                            validator: (name) {
-                              if (name == null || name.isEmpty) {
-                                return 'Please enter the contact name';
-                              }
-                              return null;
-                            },
-                            textInputFormatter: [
-                              LengthLimitingTextInputFormatter(16),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          CustomTextField(
-                            controller: numberCNTLR,
-                            keyBoardType: TextInputType.number,
-                            hintText: 'Phone number',
-                            validator: (number) {
-                              if (number == null || number.isEmpty) {
-                                return 'Please enter the contact number';
-                              }else if (number.length < 10){
-                                return 'Number must be 11 Character';
+          const Spacer(flex: 10,),
+            Form(
+              key: _globalKey,
+              child: Column(
+                children: [
+                  CustomTextField(
+                    controller: nameCNTLR,
+                    padding: const EdgeInsets.only(left: 14),
+                    hintText: 'Contact name',
+                    validator: (name) {
+                      if (name == null || name.isEmpty) {
+                        return 'Please enter name';
+                      }
+                      return null;
+                      // return RegExp(
+                      //   // "^(?:[+0]9)?[0-9]{10,12}",
+                      //   "^[0-9]{4} [0-9]{7}",
+                      // ).hasMatch(name!)
+                      //     ? null
+                      //     : 'Format XXXX XXXXXXX';
 
-                              }
-                              return null;
-                            },
-                            textInputFormatter: [
-                              LengthLimitingTextInputFormatter(11),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    ContainerAndCheckBox(
-                      title: 'Add to favorite contact',
-                      isCheck: createProvider.isCheck,
-                      onChanged: (value) {
-                        createProvider.getCheck(value);
-                      },
-                    ),
-                    const SizedBox(height: 30),
-                    CustomBtn(
-                      height: SizeUtils.getProportionateScreenHeight(52),
-                      backgroundColor: brandSecondaryColor,
-                      borderRadius: 10,
-                      onPressed: () {
-                        if (_globalKey.currentState!.validate()) {
-                          userService.addContact(name: nameCNTLR.text, avatar: '', number: numberCNTLR.text,isFavorite: createProvider.isCheck);
-                          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-                          navbarProvider.getSelectedIndex(0);
-                        }
-                      },
-                      text: 'Create',
-                    ),
-                  ],
-                ),
+                    },
+                    textInputFormatter: [
+                      LengthLimitingTextInputFormatter(30),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  CustomTextField(
+                    controller: numberCNTLR,
+                    padding: const EdgeInsets.only(left: 14),
+                    keyBoardType: TextInputType.number,
+                    hintText: 'Phone number',
+                    validator: (number) {
+                      if (number == null || number.isEmpty) {
+                        return 'Please enter contact number';
+                      }
+                      return null;
+                    },
+                    textInputFormatter: [
+                      LengthLimitingTextInputFormatter(14),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  ContainerAndCheckBox(isCheck: createProvider.isFavorite!, onChanged: (value){
+                    createProvider.getFavorite(value!);
+                  }, title: 'Add to favorite'),
+                  const SizedBox(height: 30),
+                  CustomBtn(
+                    backgroundColor: brandSecondaryColor,
+                    radius: 10,
+                    onPressed: () {
+                      if (_globalKey.currentState!.validate()) {
+                        final int random =  Random().nextInt(100)-1;
+                        userService.addContact('${numberCNTLR.text}-$random',
+                          name: nameCNTLR.text,
+                          number: numberCNTLR.text,
+                          isFavorite: createProvider.isFavorite,
+                        );
+                        Navigator.pushNamedAndRemoveUntil(context, '/navBarController', (route) => false);
+                      }
+                    },
+                    text: 'Create',
+                  ),
+                ],
               ),
             ),
-            SizedBox(
-              height: SizeUtils.getProportionateScreenHeight(50),
-            ),
+            const Spacer(flex: 10,),
           ],
         ),
       ),
     );
   }
 }
+
+

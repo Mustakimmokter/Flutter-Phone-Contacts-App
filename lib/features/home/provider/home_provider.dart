@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phone_contact_app/shared/models/contact_info.dart';
 
-class BodyProvider extends ChangeNotifier {
+class HomeProvider extends ChangeNotifier {
 
 
 
@@ -40,10 +40,9 @@ class BodyProvider extends ChangeNotifier {
 
   List<Contacts> get contactList => _contactList;
 
-  void getIsTrue(int index) {
+  void isCollapse(int index) {
     contactList[index].isSelected = !contactList[index].isSelected;
     notifyListeners();
-    print(contactList[index].isSelected);
   }
 
 

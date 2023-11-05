@@ -19,6 +19,7 @@ class FavoriteProvider extends ChangeNotifier {
     Contacts(),
     Contacts(),
   ];
+  List<Contacts> get contactList => _contactList;
 
   final bool _isTrue = true;
 
@@ -27,7 +28,6 @@ class FavoriteProvider extends ChangeNotifier {
 
   bool get isTrue => _isTrue;
   int get selectedIndex => _selectedIndex;
-  List<Contacts> get contactList => _contactList;
 
   void getIsTrue(int index){
    contactList[index].isSelected =! contactList[index].isSelected;

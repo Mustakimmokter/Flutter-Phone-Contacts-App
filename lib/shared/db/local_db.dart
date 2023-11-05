@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:phone_contact_app/features/db/table.dart';
+import 'package:phone_contact_app/shared/db/table.dart';
 
 class DbHelper {
 

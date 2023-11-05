@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
-import 'package:phone_contact_app/shared/widgets/index.dart';
 
 class ContactDetails extends StatelessWidget {
   const ContactDetails(
@@ -8,20 +7,18 @@ class ContactDetails extends StatelessWidget {
       required this.name,
       required this.number,
       required this.avatar,
-        required this.onTapOne,
-        required this.onTapTwo,
+        required this.avatarOnTap,
+        required this.collapsePressed,
         required this.call,
-        this.secondBtn,
-        this.iconData,
-        this.color,
-        this.secondBtnIcon,
+        required this.onLongPress,
+        required this.favorite,
+        required this.isFavorite,
       })
       : super(key: key);
 
   final String name, number, avatar;
-  final Function()? onTapOne, onTapTwo, secondBtn,call;
-  final IconData? iconData, secondBtnIcon;
-  final Color? color;
+  final VoidCallback avatarOnTap, collapsePressed,call, onLongPress, favorite;
+  final bool isFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -29,70 +26,62 @@ class ContactDetails extends StatelessWidget {
       padding: const EdgeInsets.only(left: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: onTapOne,
-                child: CustomContainer(
-                  height: 45,
-                  width: 45,
-                  radius: 100,
-                  color: color ?? brandColor,
-                  alignment: Alignment.center,
-                  child: CustomText(text: avatar,textColor: Colors.white,),
+                onTap: avatarOnTap,
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: brandColor,
+                  child: _text(avatar,color: Colors.white),
                 ),
               ),
               const SizedBox(width: 14),
               // info
               GestureDetector(
-                onTap: onTapTwo,
-                child: CustomContainer(
-                  radius: 0,
+                onTap: collapsePressed,
+                onLongPress: onLongPress,
+                child: Container(
                   color: Colors.transparent,
-                  width: SizeUtils.getProportionateScreenWidth(155),
+                  width: SizeUtils.screenWidth / 2.2,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(
-                        text: name,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                        textOverflow: TextOverflow.ellipsis
-                      ),
-                      CustomText(
-                        text: number,
-                        fontSize: 14,
-                      ),
+                      _text(name,size: 16),
+                      _text(number,size: 14,fontWeight: FontWeight.normal),
                     ],
                   ),
                 ),
               ),
             ],
           ),
+          GestureDetector(
+            onTap: favorite,
+            child: Icon(isFavorite ? Icons.favorite_rounded: Icons.favorite_border_rounded,color: brandColor,size: 20,),
+          ),
           // Call /
-          Row(
-            children: [
-                GestureDetector(
-                  onTap: secondBtn,
-                  child: Icon(
-                    secondBtnIcon ?? Icons.arrow_drop_down,
-                    color: Colors.pink,
-                    size: 20,
-                  ),
-                ),
-              const SizedBox(width: 05),
-              IconButton(
-                onPressed: call,
-                splashRadius: 25,
-                icon: Icon(
-                  iconData ?? Icons.call,
-                  color: color ?? brandColor,
-                ),
-              ),
-            ],
+          IconButton(
+            padding: EdgeInsets.zero,
+            onPressed: call,
+            splashRadius: 20,
+            icon: const Icon(Icons.call,color: brandColor,),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _text(String text,{Color? color,double? size,FontWeight? fontWeight}){
+    return Text(
+      text,
+      style: TextStyle(
+        color: color?? Colors.black87,
+        fontSize: size ?? 18,
+        fontWeight: fontWeight ?? FontWeight.w500,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

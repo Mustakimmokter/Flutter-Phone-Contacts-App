@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:phone_contact_app/features/login/provider/login_provider.dart';
+import 'package:flutter/services.dart';
+import 'package:phone_contact_app/features/sign_in/provider/login_provider.dart';
 import 'package:phone_contact_app/shared/app_helper/index.dart';
 import 'package:phone_contact_app/shared/services/user_services/auth_service.dart';
 import 'package:phone_contact_app/shared/utils/index.dart';
@@ -7,34 +8,31 @@ import 'package:phone_contact_app/shared/widgets/index.dart';
 import 'package:provider/provider.dart';
 
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class SignInScreen extends StatelessWidget {
+  const SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<LoginProvider>(
       create: (context) => LoginProvider(),
-      child: LoginScreenBody(),
+      child: SignInScreenBody(),
     );
   }
 }
 
 
-class LoginScreenBody extends StatelessWidget {
-  LoginScreenBody({Key? key}) : super(key: key);
+class SignInScreenBody extends StatelessWidget {
+  SignInScreenBody({Key? key}) : super(key: key);
 
-  final TextEditingController emailCTRL = TextEditingController();
-  final TextEditingController passwordCTRL = TextEditingController();
+  final TextEditingController _numberController = TextEditingController();
   final _globalKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     SizeUtils().init(context);
-    //final loginProvider = Provider.of<LoginProvider>(context);
     final authService = Provider.of<AuthService>(context);
     return Scaffold(
-      //backgroundColor: brandSecondaryColor,
-      body: Column(
+      body: authService.isSignOut ? Column(
         children: [
           const CustomContainer(
             padding: EdgeInsets.only(left: 20),
@@ -59,7 +57,7 @@ class LoginScreenBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Spacer(flex: 1),
+                  const Spacer(flex: 1),
                   const CustomText(
                     text: 'Welcome back',
                     textColor: brandSecondaryColor,
@@ -67,7 +65,7 @@ class LoginScreenBody extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     letterSpacing: .5,
                   ),
-                  Spacer(flex: 5),
+                  const Spacer(flex: 5),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -79,27 +77,29 @@ class LoginScreenBody extends StatelessWidget {
                       Form(
                         key: _globalKey,
                         child: CustomTextField(
-                          controller: emailCTRL,
+                          controller: _numberController,
                           hintText: 'Enter number',
+                          textInputFormatter: [
+                            LengthLimitingTextInputFormatter(11),
+                          ],
                           keyBoardType: TextInputType.number,
                           prefix: const Padding(
                             padding: EdgeInsets.only(left: 10,right: 10,top: 14),
                             child: CustomText(text: '+880',textColor: Colors.black54,),
                           ),
-                          validator: (email){
-                            if(AppValidation.isEmailValid(email!)){
+                          validator: (phnNumber){
+                            if(phnNumber!.isEmpty){
+                              return 'Required phone number';
+                            }else if(AppValidation.isPhoneNumberValid(phnNumber)){
                               return null;
-                            }else if(email.isEmpty || email.isEmpty){
-                              return 'Required email';
                             }else{
-                              return 'Enter valid email';
+                              return 'Enter valid number';
                             }
                           },
                         ),
                       ),
                       const SizedBox(height: 20),
                       CustomBtn(
-                        height: 50,
                         backgroundColor: brandSecondaryColor,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -110,30 +110,32 @@ class LoginScreenBody extends StatelessWidget {
                             SizedBox(
                               width: 30,
                               height: 30,
-                              child: authService.isLogin? const CircularProgressIndicator(color: Colors.white,):const SizedBox(),
+                              child: authService.isSignIn? const CircularProgressIndicator(color: Colors.white,):const SizedBox(),
                             ),
                             const SizedBox(width: 16,),
                           ],
                         ),
                         onPressed: () {
-                          final params = {'isComeToSignInPage': false};
-                        Navigator.pushNamed(context, '/myProfile',arguments: params);
-                          // if(_globalKey.currentState!.validate()){
-                          //   authService.login(emailCTRL.text, passwordCTRL.text, context);
-                          //
-                          // }
+                          if(_globalKey.currentState!.validate()){
+                          if( _numberController.text[0] == '0'){
+                            authService.phoneNumberVerification(_numberController.text, context, '');
+                          }else{
+                            authService.phoneNumberVerification('0${_numberController.text}', context, '');
+                          }
+                          }
                         },
                       ),
                     ],
                   ),
-                  Spacer(flex: 5),
+                  const Spacer(flex: 5),
 
                 ],
               ),
             ),
           ),
         ],
-      ),
+      ):
+      const Center(child: CircularProgressIndicator(),),
     );
   }
 }

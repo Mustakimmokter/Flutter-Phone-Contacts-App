@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
     Key? key,
-    required this.controller,
+     this.controller,
     this.hintText,
     this.onChanged,
     this.obscuringCharacter = '*',
@@ -15,20 +15,18 @@ class CustomTextField extends StatelessWidget {
     this.onSubmit,
     this.border,
     this.autofocus = false,
-    this.onTap,
     this.prefix,
     this.suffix,
     this.padding,
   }) : super(key: key);
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String? hintText, obscuringCharacter;
   final Function(String)? onChanged, onSubmit;
   final bool? obscureText, autofocus;
   final List<TextInputFormatter>? textInputFormatter;
   final TextInputType? keyBoardType;
   final InputBorder? border;
-  final VoidCallback? onTap;
   final Widget? prefix,suffix;
   final String? Function(String?)? validator;
   final EdgeInsetsGeometry? padding;
@@ -40,15 +38,15 @@ class CustomTextField extends StatelessWidget {
       onChanged: onChanged,
       validator: validator,
       obscureText: obscureText!,
+      textCapitalization: TextCapitalization.words,
       autofocus: autofocus!,
       keyboardType: keyBoardType,
       onFieldSubmitted: onSubmit,
-      onTap: onTap,
       obscuringCharacter: obscuringCharacter!,
       decoration: InputDecoration(
         contentPadding: padding ?? const EdgeInsets.only(top: 15),
         hintText: hintText,
-        border: border,
+        border: border ?? OutlineInputBorder(),
        prefixIcon: prefix,
         suffixIcon: suffix,
       ),

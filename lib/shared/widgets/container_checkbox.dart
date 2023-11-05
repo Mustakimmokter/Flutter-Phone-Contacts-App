@@ -20,7 +20,7 @@ class ContainerAndCheckBox extends StatelessWidget {
         onChanged(isCheck);
       },
       child: CustomContainer(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.only(left: 14),
         height: 50,
         radius: 05,
         color: Colors.transparent,
@@ -30,6 +30,7 @@ class ContainerAndCheckBox extends StatelessWidget {
           children: [
             CustomText(text: title),
             Checkbox(
+              splashRadius: 0,
               value: isCheck,
               onChanged: onChanged,
             ),

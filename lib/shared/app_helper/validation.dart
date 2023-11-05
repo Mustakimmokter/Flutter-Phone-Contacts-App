@@ -1,37 +1,11 @@
 class AppValidation {
 
-  static bool isEmailValid(String email) {
-    //final bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
-    String emailValid2 = r'^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    final bool regex = RegExp(emailValid2).hasMatch(email);
+  // Like This 1812598624 and 01812598624
+  static bool isPhoneNumberValid(String phnNumber) {
+    // ignore: unrelated_type_equality_checks
+    String phoneValid = phnNumber[0]== '0'? r"(^([+]{1}[8]{2}|0088)?(01){1}[3-9]{1}\d{8})$" : r"(^([+][8]{2}|0088)?(01)|(1)[3-9]{1}\d{8})$";
+    final bool regex = RegExp(phoneValid).hasMatch(phnNumber);
     return regex;
   }
-
-}
-
-
-
-abstract class ExampleOne {
-
-  void methodOne(){
-    print('mathodONe');
-  }
-
-  void methodTwo(){
-    print('mathodTwo');
-  }
-}
-
-class ExampleOverride implements ExampleOne {
-  @override
-  void methodOne() {
-    // TODO: implement methodOne
-  }
-
-  @override
-  void methodTwo() {
-    // TODO: implement methodTwo
-  }
-
 
 }

@@ -9,21 +9,26 @@ class IconAndTextBtn extends StatelessWidget {
       this.label,
       this.icon,
       this.color = brandColor,
-        this.iconSize = 30,
-        this.labelSize = 14
+        this.iconSize = 24,
+        this.labelSize = 14,
+        this.labelColor = brandColor,
+        this.labelFontWeight,
+        this.onLongPressed,
       })
       : super(key: key);
 
-  final VoidCallback onTap;
+  final VoidCallback? onTap, onLongPressed;
   final String? label;
   final IconData? icon;
-  final Color? color;
+  final Color? color, labelColor;
   final double? iconSize,labelSize;
+  final FontWeight? labelFontWeight;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+      onLongPress: onLongPressed,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -32,11 +37,14 @@ class IconAndTextBtn extends StatelessWidget {
             color: color,
             size: iconSize,
           ),
-          SizedBox(width: 04),
-          CustomText(
-            text: label ?? 'null',
-            textColor: color,
-            fontSize: labelSize,
+          const SizedBox(width: 04),
+          Text(
+            label ?? 'null',
+            style: TextStyle(
+              color: labelColor,
+              fontSize: labelSize,
+              fontWeight: labelFontWeight ?? FontWeight.normal
+            ),
           ),
         ],
       ),

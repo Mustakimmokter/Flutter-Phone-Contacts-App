@@ -37,7 +37,7 @@ class CustomNavBar extends StatelessWidget {
               color: selectedColor,
               size: size,
             ),
-            SizedBox(width: 04),
+            const SizedBox(width: 04),
             CustomText(
               text: label?? 'null',
               textColor: selectedColor,
