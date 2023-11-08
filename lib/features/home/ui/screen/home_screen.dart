@@ -161,7 +161,9 @@ class HomeScreenBody extends StatelessWidget {
                                         .spaceEvenly,
                                     children: [
                                       IconAndTextBtn(
-                                        onTap: () {},
+                                        onTap: () {
+                                          userService.phoneSMS(contacts[index]['number']);
+                                        },
                                         icon: Icons.message,
                                         iconSize: 20,
                                         label: 'Message',

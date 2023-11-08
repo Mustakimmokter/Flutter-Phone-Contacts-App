@@ -80,7 +80,7 @@ class AuthService extends ChangeNotifier {
       if(_auth.currentUser!.uid.isNotEmpty){
         final params = {'number': _auth.currentUser!.phoneNumber};
         // ignore: use_build_context_synchronously
-        Navigator.push(context, MaterialPageRoute(builder: (_)=>UserState(number : params['number'].toString())));
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_)=>UserState(number : params['number'].toString())), (route) => false);
         Fluttertoast.showToast(msg: 'Successful login');
         final userData = {'phoneNumber': _auth.currentUser!.phoneNumber,'OTP': smsCode};
         String userDataEnCoded = jsonEncode(userData);

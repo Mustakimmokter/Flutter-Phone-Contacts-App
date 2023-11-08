@@ -10,11 +10,12 @@ Future<void> main()async {
   await Firebase.initializeApp();
   await Hive.initFlutter();
   await DbHelper.createTable();
-  //FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   await Firebase.initializeApp();
-//   print("App Background notification Data ---------: ${message.notification!.title}");
-// }
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("App Background notification Data ---------: ${message.notification!.title}");
+}

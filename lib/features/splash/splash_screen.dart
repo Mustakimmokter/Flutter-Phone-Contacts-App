@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:phone_contact_app/features/splash/provider/provider.dart';
-import 'package:phone_contact_app/shared/app_helper/network_chercker.dart';
 import 'package:phone_contact_app/shared/db/local_db.dart';
 import 'package:phone_contact_app/shared/db/table.dart';
+import 'package:phone_contact_app/shared/services/fcm/fcm.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -14,6 +14,11 @@ class SplashScreen extends StatelessWidget {
     return ChangeNotifierProvider<SplashProvider>(
       create: (context) => SplashProvider()..initCall(
           onPressed: (){
+            FCMNotification.requestSettingPermission();
+            FCMNotification.initialNotificationMessage();
+            FCMNotification.initLocalNotification();
+            FCMNotification.getDeviceToken();
+            FCMNotification.refreshToken();
             final data = DbHelper.getData(DbTable.userInfo, DbTable.userInfo);
             if(data != null || data == ''){
               Navigator.pushNamedAndRemoveUntil(context, '/navBarController', (route) => false);

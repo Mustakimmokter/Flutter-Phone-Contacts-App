@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:phone_contact_app/features/details/provider/details_provider.dart';
 import 'package:phone_contact_app/shared/services/user_services/user_service.dart';
 import 'package:phone_contact_app/shared/utils/color_utils.dart';
 import 'package:phone_contact_app/shared/utils/size_utils.dart';
